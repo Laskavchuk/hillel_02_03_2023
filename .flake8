@@ -3,4 +3,4 @@
         venv,
         __pycache__
         *tests*.py
-        products\migrations\
+        migrations
