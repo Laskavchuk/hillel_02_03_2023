@@ -12,6 +12,19 @@ def upload_to(instance, filename):
     return f'products/images/{str(instance.pk)}{extension}'
 
 
+class Category(PKMixin):
+    name = models.CharField(max_length=255)
+    description = models.TextField(
+        blank=True,
+        null=True
+    )
+    image = models.ImageField(
+        upload_to=upload_to,
+        null=True,
+        blank=True
+    )
+
+
 class Product(PKMixin):
     name = models.CharField(max_length=255)
     price = models.DecimalField(
@@ -29,24 +42,6 @@ class Product(PKMixin):
         null=True,
         blank=True
     )
+    categories = models.ManyToManyField(Category, blank=True)
+    products = models.ManyToManyField("products.Product", blank=True)
 
-
-class Category(PKMixin):
-    name = models.CharField(max_length=255)
-    description = models.TextField(
-        blank=True,
-        null=True
-    )
-    image = models.ImageField(
-        upload_to=upload_to,
-        null=True,
-        blank=True
-    )
-
-
-class Discount(models.Model):
-    amount = models.PositiveIntegerField()
-    code = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
-    discount_type = models.IntegerField(
-        choices=((0, 'У грошах'), (1, 'Відсотки')), default=0)
