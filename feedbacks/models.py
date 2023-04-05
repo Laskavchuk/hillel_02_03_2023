@@ -8,9 +8,7 @@ from project.mixins.models import PKMixin
 class Feedback(PKMixin):
     user = models.ForeignKey(
         get_user_model(),
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False
+        on_delete=models.CASCADE
     )
     text = models.TextField(
         blank=True,
