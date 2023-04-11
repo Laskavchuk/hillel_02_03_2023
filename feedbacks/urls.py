@@ -1,7 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
-from .views import feedbacks
+
+from feedbacks.views import FeedbackView
 
 urlpatterns = [
-    path('', feedbacks)
+    path('', login_required(FeedbackView.as_view()), name='feedbacks'),
 ]
-
