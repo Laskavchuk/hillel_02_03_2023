@@ -1,10 +1,33 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Товари</title>
+    <title>Title</title>
 </head>
 <body>
 <h1>Товари</h1>
+
+{% for product in products %}
+    <p>
+        {% if product.image %}<img src="{{ product.image.url }}" style="width: 80px;">{% endif %}
+        {{ product.name }} - {{ product.price }}
+    </p>
+{% endfor %}
+
+<div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+{#        {% for field in form %}#}
+{#            <label for="{{ field.label }}">{{ field.name }}</label>#}
+{#            <input type="{{ field.widget_type }}" value="{{ field.initial }}" name="{{ field.name }}" />#}
+{#        {% endfor %}#}
+        {{ form.as_div }}
+        <input type="submit" value="Save">
+    </form>
+    {% for name, error in form.errors.items %}
+        <p>{{ name }} {{ error }}</p>
+    {% endfor %}
+</div>
 </body>
 </html>
