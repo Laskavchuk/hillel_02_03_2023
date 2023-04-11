@@ -5,6 +5,7 @@
     <title>Feedback</title>
 </head>
 <body>
+<h1>{{ user.is_authenticated }}</h1>
 {% for feedback in feedbacks %}
     <p>{{ feedback.text }} {{ feedback.rating }}</p>
 {% endfor %}
