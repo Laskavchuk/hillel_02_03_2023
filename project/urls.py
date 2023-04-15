@@ -19,6 +19,7 @@ from products.urls import urlpatterns as products_urlpatterns
 from django.conf import settings
 from feedbacks.urls import urlpatterns as feedbacks_urlpatterns
 from accounts.urls import urlpatterns as accounts_urlpatterns
+from main.urls import urlpatterns as main_urlpatterns
 
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('products/', include(products_urlpatterns)),
     path('feedbacks/', include(feedbacks_urlpatterns)),
     path('accounts/', include(accounts_urlpatterns)),
+    path('', include(main_urlpatterns))
 
 ]
 if settings.DEBUG:
