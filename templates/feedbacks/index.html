@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Feedback</title>
-</head>
-<body>
-<h1>{{ user.is_authenticated }}</h1>
-{% for feedback in feedbacks %}
-    <p>{{ feedback.text }} {{ feedback.rating }}</p>
-{% endfor %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save">
-</form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <h2>Feedbacks</h2>
+        <ul class="list-group py-3">
+            {% for feedback in object_list %}
+                <li class="list-group-item">
+                    <a class="d-flex justify-content-between" data-bs-toggle="collapse" href="#collapse{{ feedback.id }}">
+                        <span>{{ feedback.user.first_name }} - {{ feedback.rating }}</span>
+                        <span>{{ feedback.created_at }}</span>
+                    </a>
+                    <div class="collapse pt-3" id="collapse{{ feedback.id }}">
+                        {{ feedback.text }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}
+
