@@ -1,33 +1,24 @@
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Товари</h1>
-
+{% block content %}
 {% for product in products %}
-    <p>
-        {% if product.image %}<img src="{{ product.image.url }}" style="width: 80px;">{% endif %}
-        {{ product.name }} - {{ product.price }}
-    </p>
+    <div class="col-sm-3">
+        <div class="card" style="width: 18rem;">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }} - {{ product.price }}</h5>
+                <p class="card-text">category:
+                    {% for category in product.categories.all %}
+                        {{ category.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p class="card-text">{{ product.description}}</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
 {% endfor %}
+{% endblock content %}
 
-<div>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-{#        {% for field in form %}#}
-{#            <label for="{{ field.label }}">{{ field.name }}</label>#}
-{#            <input type="{{ field.widget_type }}" value="{{ field.initial }}" name="{{ field.name }}" />#}
-{#        {% endfor %}#}
-        {{ form.as_div }}
-        <input type="submit" value="Save">
-    </form>
-    {% for name, error in form.errors.items %}
-        <p>{{ name }} {{ error }}</p>
-    {% endfor %}
-</div>
-</body>
-</html>
+
+
