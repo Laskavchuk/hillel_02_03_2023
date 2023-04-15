@@ -1,12 +1,12 @@
-from django.views.generic import FormView
+from django.urls import reverse
+from django.views.generic import FormView, ListView
 from feedbacks.model_forms import FeedbackModelForm
 from feedbacks.models import Feedback
 
 
 class FeedbackView(FormView):
     form_class = FeedbackModelForm
-    template_name = 'feedbacks/index.html'
-    success_url = '/feedbacks/'
+    template_name = 'feedbacks/create.html'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -22,3 +22,12 @@ class FeedbackView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('feedbacks')
+
+
+class FeedbackList(ListView):
+    template_name = 'feedbacks/index.html'
+    model = Feedback
+
