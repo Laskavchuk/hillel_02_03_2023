@@ -24,6 +24,9 @@ class Category(PKMixin):
         blank=True
     )
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Product(PKMixin):
     name = models.CharField(max_length=255)
@@ -45,3 +48,5 @@ class Product(PKMixin):
     categories = models.ManyToManyField(Category, blank=True)
     products = models.ManyToManyField("products.Product", blank=True)
 
+    def __str__(self):
+        return f"{self.name}"
