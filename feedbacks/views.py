@@ -1,4 +1,4 @@
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views.generic import FormView, ListView
 from feedbacks.model_forms import FeedbackModelForm
 from feedbacks.models import Feedback
@@ -24,7 +24,7 @@ class FeedbackView(FormView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('feedbacks')
+        return reverse_lazy('feedbacks')
 
 
 class FeedbackList(ListView):
