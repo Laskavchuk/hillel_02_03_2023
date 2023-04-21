@@ -27,6 +27,10 @@ class ProductView(TemplateView):
 
 
 class ExportCSVView(View):
+    @method_decorator(login_required())
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         headers = {
             'Content-Type': 'text/csv',
