@@ -1,6 +1,6 @@
 import csv
 
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -58,6 +58,7 @@ class ImportCSV(FormView):
     template_name = 'products/import_csv.html'
     success_url = reverse_lazy('products')
 
+    @method_decorator(login_required())
     @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
