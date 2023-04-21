@@ -1,23 +1,54 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-{% for product in products %}
-    <div class="col-sm-3">
-        <div class="card" style="width: 18rem;">
-            <img src="{{ product.image.url }}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ product.name }} - {{ product.price }}</h5>
-                <p class="card-text">category:
-                    {% for category in product.categories.all %}
-                        {{ category.name }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
-                <p class="card-text">{{ product.description}}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+    {% for product in products %}
+        <div class="col-12 {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %} mt-3 mt-lg-5">
+            <div class="card">
+                {% if product.image %}
+                    <figure class="text-center">
+                        <img src="{{ product.image.url }}"
+                             class="product-img p-3"
+                             alt="{{ product.name }}">
+                    </figure>
+                    {% else %}
+                    <figure class="text-center">
+                        <img src="{% static 'images/logo.png' %}"
+                             class="product-img p-3"
+                             alt="{{ product.name }}">
+                    </figure>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="small">
+                        {% if product.categories.all %}
+                           <span class="text-success">{{ product.categories.all|join:', ' }}</span>
+                        {% endif %}
+                    </p>
+
+                    <p class="card-text">
+                        {{ product.description|truncatewords:16 }}
+                    </p>
+                    <p class="card-text">
+                        {{ product.price }}
+                    </p>
+                    {% if product.products.exists %}
+                        <p>Including:</p>
+                        {% for sub in product.products.iterator %}
+                            <div class="d-inline-flex flex-column rounded border p-2 m-1 sub-product">
+                                <p>{{ sub.name }}</p>
+                                <figure class="text-center d-inline">
+                                    <img src="{{ sub.image.url }}"
+                                         class="product-img p-3"
+                                         alt="{{ product.name }}">
+                                </figure>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <a href="#" class="btn btn-warning w-100">Add to cart</a>
+                </div>
             </div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
 {% endblock content %}
 
 
