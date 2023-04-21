@@ -83,7 +83,8 @@ class Order(PKMixin):
             if self.discount.discount_type == DiscountTypes.VALUE:
                 total_amount -= self.discount.amount
             elif self.discount.discount_type == DiscountTypes.PERCENT:
-                total_amount -= (total_amount / 100 * self.discount.amount)
+                total_amount -= decimal.Decimal(
+                    str(total_amount)) / 100 * self.discount.amount
 
         return decimal.Decimal(str(total_amount)).quantize(decimal.Decimal('.01'))
 
