@@ -59,9 +59,13 @@ class ImportCSVForm(forms.Form):
         products_list = []
         for product in reader:
             try:
-                category_name = product['сategories']
-                category, _ = Category.objects.get_or_create(
-                    name=category_name)
+                category_names = product['сategories'].split(',')
+                categories = []
+                for category_name in category_names:
+                    category_name = category_name.strip()
+                    category, _ = Category.objects.get_or_create(
+                        name=category_name)
+                    categories.append(category)
                 product_obj = Product(
                     name=product['name'],
                     description=product['description'],
@@ -69,7 +73,7 @@ class ImportCSVForm(forms.Form):
                     sku=product['sku']
                 )
                 product_obj.save(using='default')
-                product_obj.categories.set([category])
+                product_obj.categories.set(categories)
                 products_list.append(product_obj)
             except (KeyError, decimal.InvalidOperation) as err:
                 raise ValidationError(err)
