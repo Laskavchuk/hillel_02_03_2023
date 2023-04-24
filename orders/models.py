@@ -78,15 +78,14 @@ class Order(PKMixin):
         total_amount = self.order_items.aggregate(
             total_amount=Sum(F('price') * F('quantity'))
         )['total_amount'] or 0
-
+        total_amount = decimal.Decimal(total_amount)
         if self.discount and self.discount.is_valid:
-            if self.discount.discount_type == DiscountTypes.VALUE:
-                total_amount -= self.discount.amount
-            elif self.discount.discount_type == DiscountTypes.PERCENT:
-                total_amount -= decimal.Decimal(
-                    str(total_amount)) / 100 * self.discount.amount
-
-        return decimal.Decimal(str(total_amount)).quantize(decimal.Decimal('.01'))
+            total_amount = (
+                total_amount - self.discount.amount
+                if self.discount.discount_type == DiscountTypes.VALUE else
+                total_amount - (total_amount / 100 * self.discount.amount)
+            ).quantize(decimal.Decimal('.01'))
+        return total_amount
 
 
 class OrderItem(PKMixin):
