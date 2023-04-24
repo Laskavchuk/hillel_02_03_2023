@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'feedbacks',
     'accounts',
     'main',
+    'tracking',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'project.middlewares.TrackingMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
