@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="col-12 my-3 my-lg-5">
+        {% if order_items %}
+            <h2>Your cart.</h2>
+            <form method="post">
+                {% csrf_token %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in order_items %}
+                        <tr>
+                            <th scope="row"
+                                class="col-1">{{ forloop.counter }}</th>
+                            <td>
+                                {{ item.product.name }}
+                                <input type="hidden"
+                                       id="item_id_{{ forloop.counter }}"
+                                       name="item_{{ forloop.counter }}"
+                                       value="{{ item.id }}">
+                            </td>
+                            <td class="col-2">
+                                <input class="form-control" type="number"
+                                       id="quantity_id_{{ forloop.counter }}"
+                                       value="{{ item.quantity }}"
+                                       name="quantity_{{ forloop.counter }}">
+                            </td>
+                            <td class="col-2">
+                                {{ item.price }}
+                            </td>
+                            <td class="col-2">
+                                {{ item.sub_total }}
+                            </td>
+                            <td class="col-2">
+                                {{ item.del }}
+                         <form method="post" action="{% url 'cart_action' 'remove' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                            <input type="submit" value="Remove" class="btn btn-danger btn-sm">
+                         </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Total: <span
+                                class="small">(including discount)</span></td>
+                        <td>{{ order.total_amount }}</td>
+                    </tr>
+                    </tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        {% if not order.discount %}
+                            <td><label for="id_discount">Have a discount code?
+                                Please enter
+                                here.</label></td>
+                            <td><input class="form-control" id="id_discount"
+                                       type="text"
+                                       name="discount"></td>
+                        {% else %}
+                            <td colspan="2">You already applied discount.</td>
+                        {% endif %}
+                        <td><input type="submit" class="btn btn-primary"
+                                   value="Recalculate"></td>
+                    </tr>
+                </table>
+
+
+            </form>
+            <form method="post" action="{% url 'cart_action' 'pay' %}">
+                {% csrf_token %}
+                <input type="submit" value="Pay order"
+                       class="btn btn-warning w-100">
+            </form>
+            <form method="post" action="{% url 'cart_action' 'clear' %}">
+                {% csrf_token %}
+                <input type="submit" value="Clear cart"
+                       class="btn btn-danger w-100">
+            </form>
+            {% if form.errors %}
+                <div class="mb-2">
+                    <ul>
+                        {% for error in form.errors %}
+                            <li class="text-danger small">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if form.non_field_errors %}
+                <div class="mb-2">
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li class="text-danger small">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% else %}
+            <h2>Your cart is empty.</h2>
+            <p><a href="{% url 'products' %}">Add to cart.</a></p>
+        {% endif %}
+    </div>
+{% endblock content %}

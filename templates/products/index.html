@@ -10,7 +10,7 @@
                              class="product-img p-3"
                              alt="{{ product.name }}">
                     </figure>
-                    {% else %}
+                {% else %}
                     <figure class="text-center">
                         <img src="{% static 'images/logo.png' %}"
                              class="product-img p-3"
@@ -20,11 +20,10 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="small">
-                        {% if product.categories.all %}
-                           <span class="text-success">{{ product.categories.all|join:', ' }}</span>
-                        {% endif %}
+                        {% for category in product.categories.iterator %}
+                            <span class="text-success">{{ category.name }} </span>
+                        {% endfor %}
                     </p>
-
                     <p class="card-text">
                         {{ product.description|truncatewords:16 }}
                     </p>
@@ -44,7 +43,13 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    <a href="#" class="btn btn-warning w-100">Add to cart</a>
+                    <form method="post" action="{% url 'cart_action' 'add' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id"
+                               value="{{ product.id }}">
+                        <input type="submit" value="Add to cart"
+                               class="btn btn-warning w-100">
+                    </form>
                 </div>
             </div>
         </div>
