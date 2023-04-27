@@ -74,6 +74,10 @@ class Order(PKMixin):
                                     name='unique_is_active')
         ]
 
+    @property
+    def is_current_order(self):
+        return self.is_active and not self.is_paid
+
     def get_total_amount(self):
         total_amount = self.order_items.aggregate(
             total_amount=Sum(F('price') * F('quantity'))
@@ -105,3 +109,7 @@ class OrderItem(PKMixin):
 
     class Meta:
         unique_together = ('order', 'product')
+
+    @property
+    def sub_total(self):
+        return self.price * self.quantity
