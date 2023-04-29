@@ -30,4 +30,5 @@ def debug_task(self, x, y):
 
 @app.task(bind=True,)
 def debug_task(self):
+    sleep(5)
     print(f'Request: {self.request!r}')

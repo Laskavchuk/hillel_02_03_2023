@@ -40,7 +40,6 @@ class FeedbackList(ListView):
 
     def get(self, request, *args, **kwargs):
         debug_task.delay()
-
         return super().get(request, *args, **kwargs)
 
     #def get(self, request, *args, **kwargs):
