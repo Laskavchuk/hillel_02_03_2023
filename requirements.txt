@@ -4,3 +4,6 @@ django-environ==0.10.0
 pillow==9.4.0
 django-widget-tweaks==1.4.12
 ipdb==0.13.13
+django-lifecycle==1.0.0
+celery[redis]==5.2.7
+django-celery-results==2.5.0

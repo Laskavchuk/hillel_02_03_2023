@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # external
     'widget_tweaks',
+    'django_celery_results',
+    # internal
     'products',
     'orders',
     'feedbacks',
@@ -147,3 +150,6 @@ STATICFILES_DIRS = ['assets']
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TASK_ALWAYS_EAGER = False
