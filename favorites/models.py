@@ -8,8 +8,7 @@ class Favorite(PKMixin):
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,)
+    )
     product = models.ForeignKey(
         'products.Product',
         on_delete=models.CASCADE,
