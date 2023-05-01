@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'accounts',
     'main',
     'tracking',
+    'favorites',
 ]
 
 MIDDLEWARE = [
