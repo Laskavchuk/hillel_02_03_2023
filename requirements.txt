@@ -7,3 +7,4 @@ ipdb==0.13.13
 django-lifecycle==1.0.0
 celery[redis]==5.2.7
 django-celery-results==2.5.0
+gevent == 22.10.2
