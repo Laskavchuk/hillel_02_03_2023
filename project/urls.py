@@ -31,7 +31,7 @@ urlpatterns = [
     path('accounts/', include(accounts_urlpatterns)),
     path('', include(main_urlpatterns)),
     path('', include(orders_urlpatterns)),
-    path('', include(favorites_urlpatterns)),
+    path('favorites/', include(favorites_urlpatterns)),
 
 ]
 if settings.DEBUG:
