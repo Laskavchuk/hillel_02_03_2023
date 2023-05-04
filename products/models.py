@@ -3,8 +3,10 @@ from os import path
 from django.db import models
 from django.core.validators import MinValueValidator
 
+from currencies.models import CurrencyHistory
 from project.constants import MAX_DIGITS, DECIMAL_PLACES
 from project.mixins.models import PKMixin
+from project.model_choices import Currencies
 
 
 def upload_to(instance, filename):
@@ -47,6 +49,20 @@ class Product(PKMixin):
     )
     categories = models.ManyToManyField(Category, blank=True)
     products = models.ManyToManyField("products.Product", blank=True)
+    currency = models.CharField(
+        max_length=16,
+        choices=Currencies.choices,
+        default=Currencies.UAH
+    )
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} - {self.price}"
+
+    def calculate_price(self):
+        exchange_price = round(self.price * self.curs, 2)
+        return exchange_price
+
+    @property
+    def curs(self):
+        return CurrencyHistory.last_curs(self.currency)
+

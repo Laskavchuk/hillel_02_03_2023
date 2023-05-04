@@ -36,10 +36,10 @@
                                        name="quantity_{{ forloop.counter }}">
                             </td>
                             <td class="col-2">
-                                {{ item.price }}
+                                {{ item.product.calculate_price}} UAH
                             </td>
                             <td class="col-2">
-                                {{ item.sub_total }}
+                                {{ item.sub_total }} UAH
                             </td>
                             <td class="col-2">
                                 {{ item.del }}
@@ -57,7 +57,7 @@
                         <td></td>
                         <td>Total: <span
                                 class="small">(including discount)</span></td>
-                        <td>{{ order.total_amount }}</td>
+                        <td>{{ order.total_amount }} UAH</td>
                     </tr>
                     </tbody>
                     <tr>

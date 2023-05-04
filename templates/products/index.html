@@ -28,7 +28,7 @@
                         {{ product.description|truncatewords:16 }}
                     </p>
                     <p class="card-text">
-                        {{ product.price }}
+                        {{ product.calculate_price }} UAH
                     </p>
                     {% if product.products.exists %}
                         <p>Including:</p>

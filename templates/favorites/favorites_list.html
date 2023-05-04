@@ -31,7 +31,7 @@
                                     {{ favorite.product.description|truncatewords:16 }}
                                 </p>
                                 <p class="card-text">
-                                    {{ favorite.product.price }}
+                                    {{ favorite.product.calculate_price }} UAH
                                 </p>
                                 {% if favorite.product.products.exists %}
                                     <p>Including:</p>

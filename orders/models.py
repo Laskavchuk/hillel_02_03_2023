@@ -121,3 +121,7 @@ class OrderItem(PKMixin):
     @property
     def sub_total(self):
         return self.price * self.quantity
+
+    def save(self, *args, **kwargs):
+        self.price = self.product.calculate_price()
+        super().save(*args, **kwargs)

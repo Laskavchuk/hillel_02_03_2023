@@ -14,6 +14,7 @@ import os
 import environ
 from pathlib import Path
 
+from celery.schedules import crontab
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,7 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # external
     'widget_tweaks',
+    'django_celery_beat',
     'django_celery_results',
+    'django_extensions',
     # internal
     'products',
     'orders',
@@ -56,6 +59,7 @@ INSTALLED_APPS = [
     'main',
     'tracking',
     'favorites',
+    'currencies',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +158,10 @@ MEDIA_URL = '/media/'
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_ALWAYS_EAGER = False
+
+CELERY_BEAT_SCHEDULE = {
+    'Get currencies': {
+        'task': 'currencies.tasks.get_currencies_task',
+        'schedule': crontab(hour='12', minute='0'),
+    },
+}
