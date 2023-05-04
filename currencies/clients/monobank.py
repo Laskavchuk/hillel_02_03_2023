@@ -11,20 +11,14 @@ class Mononbank(APIBaseClient):
         )
         results = []
         if self.response:
-            first_object = self.response.json()[0]
-            first_object['currencyCodeA'] = 'USD'
-            second_object = self.response.json()[1]
-            second_object['currencyCodeA'] = 'EUR'
-            results.append({
-                'code': first_object["currencyCodeA"],
-                'buy': first_object['rateBuy'],
-                'sale': first_object['rateSell'],
-            })
-            results.append({
-                'code': second_object["currencyCodeA"],
-                'buy': second_object['rateBuy'],
-                'sale': second_object['rateSell'],
-            })
+            for obj in self.response.json()[:2]:
+                obj['currencyCodeA'] = 'USD' if obj['currencyCodeA'] == 840 \
+                    else 'EUR'
+                results.append({
+                    'code': obj['currencyCodeA'],
+                    'buy': obj['rateBuy'],
+                    'sale': obj['rateSell']
+                })
         return results
 
     def save(self):
