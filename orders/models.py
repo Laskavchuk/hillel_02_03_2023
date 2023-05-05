@@ -5,8 +5,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import Sum, F
 from django.utils import timezone
-from django_lifecycle import LifecycleModelMixin, hook, AFTER_CREATE, \
-    AFTER_UPDATE
+from django_lifecycle import LifecycleModelMixin, hook, AFTER_UPDATE, \
+    AFTER_CREATE
 
 from project.constants import MAX_DIGITS, DECIMAL_PLACES
 from project.mixins.models import PKMixin
@@ -100,7 +100,7 @@ class Order(LifecycleModelMixin, PKMixin):
         Order.objects.filter(id=self.id).update(total_amount=total_amount)
 
 
-class OrderItem(PKMixin):
+class OrderItem(LifecycleModelMixin, PKMixin):
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
@@ -122,6 +122,7 @@ class OrderItem(PKMixin):
     def sub_total(self):
         return self.price * self.quantity
 
-    def save(self, *args, **kwargs):
+    @hook(AFTER_CREATE)
+    def signal_change_price(self, *args, **kwargs):
         self.price = self.product.calculate_price()
         super().save(*args, **kwargs)
