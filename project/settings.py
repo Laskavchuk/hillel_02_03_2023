@@ -124,6 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 LOGIN_REDIRECT_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = LOGIN_REDIRECT_URL
+AUTH_USER_MODEL = 'accounts.User'
 
 
 # Internationalization
@@ -164,4 +165,11 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'currencies.tasks.get_currencies_task',
         'schedule': crontab(hour='12', minute='0'),
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
 }
