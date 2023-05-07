@@ -1,12 +1,15 @@
 from os import path
 
+from django.core.cache import cache
 from django.db import models
 from django.core.validators import MinValueValidator
+from django_lifecycle import hook, AFTER_CREATE, AFTER_UPDATE, \
+    LifecycleModelMixin
 
 from currencies.models import CurrencyHistory
 from project.constants import MAX_DIGITS, DECIMAL_PLACES
 from project.mixins.models import PKMixin
-from project.model_choices import Currencies
+from project.model_choices import Currencies, ProductCacheKeys
 
 
 def upload_to(instance, filename):
@@ -30,7 +33,7 @@ class Category(PKMixin):
         return f"{self.name}"
 
 
-class Product(PKMixin):
+class Product(LifecycleModelMixin, PKMixin):
     name = models.CharField(max_length=255)
     price = models.DecimalField(
         validators=[MinValueValidator(0)],
@@ -65,4 +68,9 @@ class Product(PKMixin):
     @property
     def curs(self):
         return CurrencyHistory.last_curs(self.currency)
+
+    @hook(AFTER_CREATE)
+    @hook(AFTER_UPDATE)
+    def after_signal(self):
+        cache.delete(ProductCacheKeys.PRODUCTS)
 

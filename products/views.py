@@ -1,29 +1,37 @@
 import csv
 
+
 from django.contrib.auth.decorators import user_passes_test, login_required
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import TemplateView, FormView
+from django.views.generic import FormView, ListView
+
+from project.model_choices import ProductCacheKeys
 from .models import Product
-from products.model_forms import ProductModelForm, ImportCSVForm
+from products.model_forms import ImportCSVForm
 
 
-class ProductView(TemplateView):
-    template_name = 'products/index.html'
+class ProductsView(ListView):
+    context_object_name = 'products'
+    model = Product
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.iterator()
-        context['form'] = ProductModelForm()
-        return context
+    def get_queryset(self):
+        queryset = cache.get(ProductCacheKeys.PRODUCTS)
+        if not queryset:
+            print('TO CACHE')
+            queryset = Product.objects.all()
+            cache.set(ProductCacheKeys.PRODUCTS, queryset)
 
-    def post(self, request, *args, **kwargs):
-        form = ProductModelForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-        return self.render_to_response(self.get_context_data())
+        ordering = self.get_ordering()
+        if ordering:
+            if isinstance(ordering, str):
+                ordering = (ordering,)
+            queryset = queryset.order_by(*ordering)
+
+        return queryset
 
 
 class ExportCSVView(View):
