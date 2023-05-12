@@ -39,6 +39,12 @@
                               </ul>
                             </li>
                             {% endif %}
+                            {% if not user.is_phone_valid %}
+                            <li class="nav-item">
+                                <a class="nav-link active text-danger" aria-current="page"
+                                   href="{% url 'phone_validation' %}">Confirm Phone Number</a>
+                            </li>
+                            {% endif %}
                         <li class="ms-auto nav-item">
                             <a class="nav-link active" aria-current="page"
                                href="{% url 'cart' %}">
