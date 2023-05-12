@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.urls import reverse_lazy
@@ -26,6 +27,7 @@ class FeedbackView(FormView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, ('Feedback added!'))
         return super().form_valid(form)
 
     def get_success_url(self):

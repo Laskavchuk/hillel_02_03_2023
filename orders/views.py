@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
@@ -34,7 +35,12 @@ class CartView(GetCurrentOrderMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
+        is_discount_changed = form.cleaned_data.get(
+            'discount') != self.get_object().discount
         form.save()
+        if is_discount_changed:
+            messages.success(self.request, ('Discount updated successfully'))
+        messages.success(self.request, ('Recalculate succeeded'))
         return super().form_valid(form)
 
 
@@ -49,5 +55,15 @@ class CartActionView(GetCurrentOrderMixin, RedirectView):
         form = CartActionForm(request.POST, instance=self.get_object())
         if form.is_valid():
             form.action(kwargs.get('action'))
+            if kwargs.get('action') == 'add':
+                messages.success(self.request, ('Product added!'))
+            elif kwargs.get('action') == 'remove':
+                messages.success(self.request, ('Product removed!'))
+            elif kwargs.get('action') == 'clear':
+                messages.success(self.request, ('Cart is clear!'))
+            elif kwargs.get('action') == 'clear':
+                messages.success(self.request, ('Pay succeeded'))
+            else:
+                messages.error(self.request, ('ERROR'))
         return self.get(request, *args, **kwargs)
 
