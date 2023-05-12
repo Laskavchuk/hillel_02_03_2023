@@ -14,7 +14,7 @@
                         <th scope="col">Quantity</th>
                         <th scope="col">Price</th>
                         <th scope="col">Subtotal</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -33,21 +33,22 @@
                                 <input class="form-control" type="number"
                                        id="quantity_id_{{ forloop.counter }}"
                                        value="{{ item.quantity }}"
-                                       name="quantity_{{ forloop.counter }}">
+                                       name="quantity_{{ forloop.counter }}"
+                                       min="1"
+                                >
                             </td>
                             <td class="col-2">
-                                {{ item.product.calculate_price}} UAH
+                                {{ item.price }}
                             </td>
                             <td class="col-2">
-                                {{ item.sub_total }} UAH
+                                {{ item.sub_total }}
                             </td>
-                            <td class="col-2">
-                                {{ item.del }}
-                         <form method="post" action="{% url 'cart_action' 'remove' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="product_id" value="{{ item.product.id }}">
-                            <input type="submit" value="Remove" class="btn btn-danger btn-sm">
-                         </form>
+                            <td>
+                                <input type="hidden" name="order_item_id"
+                                       value="{{ item.id }}">
+                                <input type="submit" value="Remove"
+                                       formaction="{% url 'cart_action' 'remove' %}"
+                                       class="btn btn-danger w-100">
                             </td>
                         </tr>
                     {% endfor %}
@@ -55,9 +56,14 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td>
+                            <input type="submit" value="Clear cart"
+                                       formaction="{% url 'cart_action' 'clear' %}"
+                                       class="btn btn-danger w-100">
+                        </td>
                         <td>Total: <span
                                 class="small">(including discount)</span></td>
-                        <td>{{ order.total_amount }} UAH</td>
+                        <td>{{ order.total_amount }}</td>
                     </tr>
                     </tbody>
                     <tr>
@@ -77,18 +83,11 @@
                                    value="Recalculate"></td>
                     </tr>
                 </table>
-
-
             </form>
             <form method="post" action="{% url 'cart_action' 'pay' %}">
                 {% csrf_token %}
                 <input type="submit" value="Pay order"
                        class="btn btn-warning w-100">
-            </form>
-            <form method="post" action="{% url 'cart_action' 'clear' %}">
-                {% csrf_token %}
-                <input type="submit" value="Clear cart"
-                       class="btn btn-danger w-100">
             </form>
             {% if form.errors %}
                 <div class="mb-2">
