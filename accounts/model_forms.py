@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, \
     AuthenticationForm as AuthAuthenticationForm
@@ -14,18 +16,15 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "phone")
 
     def clean_phone(self):
-        phone = self.cleaned_data['phone']
-        if len(phone) < 5:
-            raise ValidationError('Phone is too short.')
-        elif len(phone) > 15:
-            raise ValidationError('Phone is too long.')
-        elif not isinstance(phone, int):
-            raise ValidationError('Phone number must be an integer.')
-        try:
-            User.objects.get(phone=phone)
-        except User.DoesNotExist:
-            return phone
-        raise ValidationError('Phone already exist.')
+        if re.fullmatch(
+                r'^\+?\d{1,4}[-.\s]?[(]?\d{1,4}[)]?[-.\s]?\d{1,3}[-.\s]?\d{1,3}[-.\s]?\d{1,3}$', # noqa
+                self.cleaned_data.get('phone')
+        ):
+            return re.sub(
+                r'[-.\s+()]', '', self.cleaned_data.get('phone')
+            )
+        else:
+            raise ValidationError('Invalid phone number')
 
     def clean_email(self):
         try:
