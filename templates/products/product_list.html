@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
     {% for product in products %}
         <div class="col-12 {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %} mt-3 mt-lg-5">
@@ -31,7 +32,7 @@
                         {{ product.calculate_price }} UAH
                     </p>
                     {% if product.products.exists %}
-                        <p>Including:</p>
+                        <p>{% translate 'Including:' %}</p>
                         {% for sub in product.products.iterator %}
                             <div class="d-inline-flex flex-column rounded border p-2 m-1 sub-product">
                                 <p>{{ sub.name }}</p>

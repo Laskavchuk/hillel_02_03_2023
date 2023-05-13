@@ -11,6 +11,7 @@ from django.contrib.auth.views import LoginView as AuthLoginView
 from accounts.model_forms import RegistrationForm, AuthenticationForm, \
     PhoneValidationForm
 from accounts.tasks import send_code_task
+from django.utils.translation import gettext_lazy as _
 
 
 class RegistrationView(FormView):
@@ -21,7 +22,7 @@ class RegistrationView(FormView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        messages.success(self.request, 'Registration success!')
+        messages.success(self.request, _('Registration success!'))
         return super().form_valid(form)
 
 
@@ -30,7 +31,7 @@ class LoginView(AuthLoginView):
 
     def form_valid(self, form):
         """Security check complete. Log the user in."""
-        messages.success(self.request, 'Welcome back!')
+        messages.success(self.request, _('Welcome back!'))
         return super().form_valid(form)
 
 
@@ -45,7 +46,7 @@ class PhoneValidationView(FormView):
 
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, 'Phone number confirmed!')
+        messages.success(self.request, _('Phone number confirmed!'))
         return super().form_valid(form)
 
     def get_form_kwargs(self):

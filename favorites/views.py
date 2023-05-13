@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -6,6 +7,7 @@ from django.views.generic import ListView, DetailView
 
 from favorites.models import Favorite
 from products.models import Product
+from django.utils.translation import gettext_lazy as _
 
 
 class FavoriteView(ListView):
@@ -40,4 +42,7 @@ class FavoriteAddOrRemoveView(DetailView):
         )
         if not created:
             favorite.delete()
+            messages.success(self.request, _('Product removed!'))
+        else:
+            messages.success(self.request, _('Product added!'))
         return HttpResponseRedirect(reverse_lazy('products'))

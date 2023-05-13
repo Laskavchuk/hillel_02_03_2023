@@ -2,6 +2,7 @@ from django import forms
 from django.utils.html import strip_tags
 
 from feedbacks.models import Feedback
+from django.utils.translation import gettext_lazy as _
 
 
 class FeedbackModelForm(forms.ModelForm):
@@ -15,7 +16,7 @@ class FeedbackModelForm(forms.ModelForm):
         self.fields['user'].initial = user
         self.fields[
             'rating'
-        ].help_text = "Rating should be from 1 to 5 points."
+        ].help_text = _("Rating should be from 1 to 5 points.")
 
     def clean_text(self):
         text = self.cleaned_data['text']

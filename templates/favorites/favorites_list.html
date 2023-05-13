@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
     <section>
         <div class="container">
@@ -71,9 +72,9 @@
                         </div>
                     </div>
                 {% empty %}
-                    <h3>Favorite list is empty</h3>
-                        <p>Go to <a href="{% url 'products' %}">products</a>
-                            page and add something to favorite.</p>
+                    <h3>{% translate 'Favorite list is empty' %}</h3>
+                        <p>{% translate 'Go to' %} <a href="{% url 'products' %}">{% translate 'products' %}</a>
+                            {% translate 'page and add something to favorite.' %}</p>
                 {% endfor %}
             </div>
         </div>

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
     <div class="col-12 my-3 my-lg-5">
         {% if order_items %}
-            <h2>Your cart.</h2>
+            <h2>{% translate 'Your cart' %}</h2>
             <form method="post">
                 {% csrf_token %}
                 <table class="table">
@@ -46,7 +46,7 @@
                             <td>
                                 <input type="hidden" name="order_item_id"
                                        value="{{ item.id }}">
-                                <input type="submit" value="Remove"
+                                <input type="submit" value="{% translate 'Remove' %}"
                                        formaction="{% url 'cart_action' 'remove' %}"
                                        class="btn btn-danger w-100">
                             </td>
@@ -57,12 +57,12 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <input type="submit" value="Clear cart"
+                            <input type="submit" value="{% translate 'Clear cart' %}"
                                        formaction="{% url 'cart_action' 'clear' %}"
                                        class="btn btn-danger w-100">
                         </td>
-                        <td>Total: <span
-                                class="small">(including discount)</span></td>
+                        <td>{% translate 'Total:' %} <span
+                                class="small">({% translate 'including discount' %})</span></td>
                         <td>{{ order.total_amount }}</td>
                     </tr>
                     </tbody>
@@ -70,23 +70,23 @@
                         <td></td>
                         <td></td>
                         {% if not order.discount %}
-                            <td><label for="id_discount">Have a discount code?
-                                Please enter
-                                here.</label></td>
+                            <td><label for="id_discount">{% translate 'Have a discount code?' %}
+                                {% translate 'Please enter here.' %}
+                                </label></td>
                             <td><input class="form-control" id="id_discount"
                                        type="text"
                                        name="discount"></td>
                         {% else %}
-                            <td colspan="2">You already applied discount.</td>
+                            <td colspan="2">{% translate 'You already applied discount.' %}</td>
                         {% endif %}
                         <td><input type="submit" class="btn btn-primary"
-                                   value="Recalculate"></td>
+                                   value="{% translate 'Recalculate' %}"></td>
                     </tr>
                 </table>
             </form>
             <form method="post" action="{% url 'cart_action' 'pay' %}">
                 {% csrf_token %}
-                <input type="submit" value="Pay order"
+                <input type="submit" value="{% translate 'Pay order' %}"
                        class="btn btn-warning w-100">
             </form>
             {% if form.errors %}
@@ -108,8 +108,8 @@
                 </div>
             {% endif %}
         {% else %}
-            <h2>Your cart is empty.</h2>
-            <p><a href="{% url 'products' %}">Add to cart.</a></p>
+            <h2>{% translate 'Your cart is empty.' %}</h2>
+            <p><a href="{% url 'products' %}">{% translate 'Add to cart.' %}</a></p>
         {% endif %}
     </div>
 {% endblock content %}

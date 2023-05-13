@@ -8,6 +8,7 @@ from feedbacks.model_forms import FeedbackModelForm
 from feedbacks.models import Feedback
 # from project.celery import debug_task
 from project.model_choices import FeedbackCacheKeys
+from django.utils.translation import gettext_lazy as _
 
 
 class FeedbackView(FormView):
@@ -27,7 +28,7 @@ class FeedbackView(FormView):
 
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, 'Feedback added!')
+        messages.success(self.request, _('Feedback added!'))
         return super().form_valid(form)
 
     def get_success_url(self):

@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block content %}
     <div class="col-12 col-lg-6 offset-lg-3">
-        <h2>Signup</h2>
+        <h2>{% translate 'Signup' %}</h2>
         <form method="post">
             {% csrf_token %}
             {% include 'parts/form.html' with form=form %}
-            <input type="submit" class="btn btn-primary" value="Submit">
+            <input type="submit" class="btn btn-primary" value="{% translate 'Submit' %}">
         </form>
     </div>
     <div class="mt-3 text-center">
-        Already have an account?
-            <a href="{% url 'login' %}"> Sign in </a>
+        {% translate 'Already have an account?' %}
+            <a href="{% url 'login' %}"> {% translate 'Sign in' %} </a>
     </div>
 {% endblock content %}

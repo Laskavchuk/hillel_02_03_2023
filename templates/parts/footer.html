@@ -1,0 +1,16 @@
+{% load i18n %}
+<section class="bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col text-white p-3 py-lg-5">
+                <span>{% translate 'Best e-store ever.' %}</span>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100">
+                    <li class="ms-auto nav-item">
+                        <a class="nav-link active" aria-current="page"
+                           href="{% url 'contacts' %}">{% translate 'Contacts' %}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

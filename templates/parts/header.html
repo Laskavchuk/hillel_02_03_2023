@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <header>
     <nav class="navbar navbar-expand-lg bg-warning">
         <div class="container-fluid">
@@ -18,15 +19,15 @@
                     {% if request.user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page"
-                               href="{% url 'products' %}">Products</a>
+                               href="{% url 'products' %}">{% translate 'Products' %}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page"
-                               href="{% url 'feedbacks' %}">Feedbacks</a>
+                               href="{% url 'feedbacks' %}">{% translate 'Feedbacks' %}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page"
-                               href="{% url 'logout' %}">Logout</a>
+                               href="{% url 'logout' %}">{% translate 'Logout' %}</a>
                         </li>
                             {% if request.resolver_match.url_name == 'products' %}
                             <li class="nav-item dropdown">
@@ -34,15 +35,15 @@
                                 CSV products
                               </a>
                               <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'products_from_csv' %}">Import</a></li>
-                                <li><a class="dropdown-item" href="{% url 'products_to_csv' %}">Download</a></li>
+                                <li><a class="dropdown-item" href="{% url 'products_from_csv' %}">{% translate 'Import' %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'products_to_csv' %}">{% translate 'Download' %}</a></li>
                               </ul>
                             </li>
                             {% endif %}
                             {% if not user.is_phone_valid %}
                             <li class="nav-item">
                                 <a class="nav-link active text-danger" aria-current="page"
-                                   href="{% url 'phone_validation' %}">Confirm Phone Number</a>
+                                   href="{% url 'phone_validation' %}">{% translate 'Confirm Phone Number' %}</a>
                             </li>
                             {% endif %}
                         <li class="ms-auto nav-item">
@@ -57,24 +58,46 @@
                             </a>
                         </li>
                     <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'favorites' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     width="16"
-                                     height="16"
-                                     class="ionicon" viewBox="0 0 512 512">
-                                    <path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"></path>
-                                </svg>
-                            </a>
-                        </li>
+                        <a class="nav-link active" aria-current="page"
+                           href="{% url 'favorites' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 class="ionicon" viewBox="0 0 512 512">
+                                <path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'set_language' %}"
+                              method="post">
+                            {% csrf_token %}
+                            <input name="next" type="hidden"
+                                   value="{{ redirect_to }}">
+                            <select name="language">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                {% for language in languages %}
+                                    <option value="{{ language.code }}"
+                                            {% if language.code == LANGUAGE_CODE %}
+                                            selected{% endif %}>
+                                        {{ language.name_local }}
+                                        ({{ language.code }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="Go">
+                        </form>
+                    </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page"
-                               href="{% url 'login' %}">Login</a>
+                               href="{% url 'login' %}">{% translate 'Login' %}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page"
-                               href="{% url 'registration' %}">Registration</a>
+                               href="{% url 'registration' %}">{% translate 'Registration' %}</a>
                         </li>
                     {% endif %}
                 </ul>
