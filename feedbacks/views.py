@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import FormView, ListView
 from feedbacks.model_forms import FeedbackModelForm
 from feedbacks.models import Feedback
-#from project.celery import debug_task
+# from project.celery import debug_task
 from project.model_choices import FeedbackCacheKeys
 
 
@@ -27,7 +27,7 @@ class FeedbackView(FormView):
 
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, ('Feedback added!'))
+        messages.success(self.request, 'Feedback added!')
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -58,11 +58,11 @@ class FeedbackList(ListView):
         return queryset
 
 
-    #def get(self, request, *args, **kwargs):
+    # def get(self, request, *args, **kwargs):
     #    debug_task.delay()
     #    return super().get(request, *args, **kwargs)
 
-    #def get(self, request, *args, **kwargs):
+    # def get(self, request, *args, **kwargs):
     #    debug_task.apply_async((2, 2), retry=True, retry_policy={
     #        'max_retries': 3
     #    })

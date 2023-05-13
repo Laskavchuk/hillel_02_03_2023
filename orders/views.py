@@ -39,8 +39,8 @@ class CartView(GetCurrentOrderMixin, FormView):
             'discount') != self.get_object().discount
         form.save()
         if is_discount_changed:
-            messages.success(self.request, ('Discount updated successfully'))
-        messages.success(self.request, ('Recalculate succeeded'))
+            messages.success(self.request, 'Discount updated successfully')
+        messages.success(self.request, 'Recalculate succeeded')
         return super().form_valid(form)
 
 
@@ -56,14 +56,14 @@ class CartActionView(GetCurrentOrderMixin, RedirectView):
         if form.is_valid():
             form.action(kwargs.get('action'))
             if kwargs.get('action') == 'add':
-                messages.success(self.request, ('Product added!'))
+                messages.success(self.request, 'Product added!')
             elif kwargs.get('action') == 'remove':
-                messages.success(self.request, ('Product removed!'))
+                messages.success(self.request, 'Product removed!')
             elif kwargs.get('action') == 'clear':
-                messages.success(self.request, ('Cart is clear!'))
+                messages.success(self.request, 'Cart is clear!')
             elif kwargs.get('action') == 'clear':
-                messages.success(self.request, ('Pay succeeded'))
+                messages.success(self.request, 'Pay succeeded')
             else:
-                messages.error(self.request, ('ERROR'))
+                messages.error(self.request, 'ERROR')
         return self.get(request, *args, **kwargs)
 
