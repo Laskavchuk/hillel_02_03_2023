@@ -1,6 +1,4 @@
 import csv
-
-
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.cache import cache
 from django.http import HttpResponse
@@ -45,7 +43,9 @@ class ExportCSVView(View):
             'Content-Disposition': 'attachment; filename="products.csv"'
         }
         response = HttpResponse(headers=headers)
-        fields_name = ['name', 'categories', 'description', 'sku', 'image', 'price', 'is_active']
+        fields_name = ['name', 'categories', 'description',
+                       'sku', 'image', 'price', 'is_active'
+                       ]
         writer = csv.DictWriter(response, fieldnames=fields_name)
         writer.writeheader()
         for product in Product.objects.iterator():
