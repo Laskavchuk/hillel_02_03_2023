@@ -16,8 +16,11 @@ def render_image(obj):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = (render_image, 'name', 'price', 'is_active')
+    list_display = (render_image, 'name', 'price', 'is_active',
+                    'categories_list')
     filter_horizontal = ('categories', 'products')
+    def categories_list(self, obj):
+        return ','.join(c.name for c in obj.categories.all())
 
 
 @admin.register(Category)

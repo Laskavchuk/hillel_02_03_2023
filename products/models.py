@@ -3,8 +3,9 @@ from os import path
 from django.core.cache import cache
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.utils.text import slugify
 from django_lifecycle import hook, AFTER_CREATE, AFTER_UPDATE, \
-    LifecycleModelMixin
+    LifecycleModelMixin, BEFORE_UPDATE, BEFORE_CREATE
 
 from currencies.models import CurrencyHistory
 from project.constants import MAX_DIGITS, DECIMAL_PLACES
@@ -17,8 +18,10 @@ def upload_to(instance, filename):
     return f'products/images/{str(instance.pk)}{extension}'
 
 
-class Category(PKMixin):
+class Category(LifecycleModelMixin, PKMixin):
     name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+    is_manual_slug = models.BooleanField(default=False)
     description = models.TextField(
         blank=True,
         null=True
@@ -31,6 +34,12 @@ class Category(PKMixin):
 
     def __str__(self):
         return f"{self.name}"
+
+    @hook(BEFORE_CREATE)
+    @hook(BEFORE_UPDATE, when='name', has_changed=True)
+    def after_signal(self):
+        if not self.is_manual_slug:
+            self.slug = slugify(self.name)
 
 
 class Product(LifecycleModelMixin, PKMixin):

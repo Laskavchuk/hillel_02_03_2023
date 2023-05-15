@@ -11,3 +11,5 @@ gevent == 22.10.2
 django-extensions==3.2.1
 django-celery-beat==2.5.0
 django-rosetta==0.9.9
+django-silk==5.0.3
+django-debug-toolbar==4.0.0
