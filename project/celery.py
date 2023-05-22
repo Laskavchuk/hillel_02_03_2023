@@ -27,8 +27,9 @@ def debug_task(self, x, y):
     print(f'Request: {self.request!r}')
 '''
 
-
+'''
 @app.task(bind=True,)
 def debug_task(self):
     sleep(5)
     print(f'Request: {self.request!r}')
+'''

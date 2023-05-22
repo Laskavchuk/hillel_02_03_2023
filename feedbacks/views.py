@@ -34,7 +34,7 @@ class FeedbackView(FormView):
     def get_success_url(self):
         return reverse_lazy('feedbacks')
 
-    @method_decorator(login_required())
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -42,6 +42,7 @@ class FeedbackView(FormView):
 class FeedbackList(ListView):
     template_name = 'feedbacks/index.html'
     model = Feedback
+    ordering = 'created_at'
 
     def get_queryset(self):
         queryset = cache.get(FeedbackCacheKeys.FEEDBACKS)
@@ -57,7 +58,6 @@ class FeedbackList(ListView):
             queryset = queryset.order_by(*ordering)
 
         return queryset
-
 
     # def get(self, request, *args, **kwargs):
     #    debug_task.delay()

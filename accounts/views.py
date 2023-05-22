@@ -13,16 +13,22 @@ from accounts.model_forms import RegistrationForm, AuthenticationForm, \
 from accounts.tasks import send_code_task
 from django.utils.translation import gettext_lazy as _
 
+from project import settings
+
 
 class RegistrationView(FormView):
     template_name = 'registration/signup.html'
     form_class = RegistrationForm
-    success_url = reverse_lazy('phone_validation')
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
         messages.success(self.request, _('Registration success!'))
+        phone = form.cleaned_data.get('phone')
+        if phone:
+            self.success_url = reverse_lazy('phone_validation')
+        else:
+            self.success_url = settings.LOGIN_REDIRECT_URL
         return super().form_valid(form)
 
 

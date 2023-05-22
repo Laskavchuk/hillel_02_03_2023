@@ -17,15 +17,15 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "phone")
 
     def clean_phone(self):
-        if re.fullmatch(
-                r'^\+?\d{1,4}[-.\s]?[(]?\d{1,4}[)]?[-.\s]?\d{1,3}[-.\s]?\d{1,3}[-.\s]?\d{1,3}$', # noqa
-                self.cleaned_data.get('phone')
-        ):
-            return re.sub(
-                r'[-.\s+()]', '', self.cleaned_data.get('phone')
-            )
-        else:
-            raise ValidationError(_('Invalid phone number'))
+        phone_number = self.cleaned_data.get('phone')
+        if phone_number:
+            if not re.fullmatch(
+                    r'^\+?\d{1,4}[-.\s]?[(]?\d{1,4}[)]?[-.\s]?\d{1,3}[-.\s]?\d{1,3}[-.\s]?\d{1,3}$',# noqa
+                    phone_number
+            ):
+                raise ValidationError(_('Invalid phone number'))
+            phone_number = re.sub(r'[-.\s+()]', '', phone_number)
+        return phone_number
 
     def clean_email(self):
         try:

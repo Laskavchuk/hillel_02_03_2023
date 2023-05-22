@@ -139,7 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',   # noqa
     },
 ]
-LOGIN_REDIRECT_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('main')
 LOGOUT_REDIRECT_URL = LOGIN_REDIRECT_URL
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = [

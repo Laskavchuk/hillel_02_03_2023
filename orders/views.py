@@ -62,7 +62,7 @@ class CartActionView(GetCurrentOrderMixin, RedirectView):
                 messages.success(self.request, _('Product removed!'))
             elif kwargs.get('action') == 'clear':
                 messages.success(self.request, _('Cart is clear!'))
-            elif kwargs.get('action') == 'clear':
+            elif kwargs.get('action') == 'pay':
                 messages.success(self.request, _('Pay succeeded'))
             else:
                 messages.error(self.request, _('ERROR'))
