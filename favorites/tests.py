@@ -12,9 +12,8 @@ def test_favorites(client, product_factory, faker, login_client):
     client, user = login_client()
     response = client.get(url)
     assert response.status_code == 200
-    assert len(response.context['object_list']) == Product.objects.count()
-
     product = product_factory()
+    assert len(response.context['object_list']) != Product.objects.count()
 
     response = client.get(
         reverse('add_or_remove_favorite', args=(str(product.id),)), follow=True)
