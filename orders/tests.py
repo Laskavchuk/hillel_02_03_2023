@@ -89,7 +89,7 @@ def test_pay(client, login_client, product_factory, faker):
 
     data = {
         'item_1': str(order_item.id),
-        'quantity_1': 5
+        'quantity_1': 1
     }
     response = client.post(reverse('cart_action', args=('pay',)), data=data,
                            follow=True)
