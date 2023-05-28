@@ -10,6 +10,7 @@ from django.views.generic import FormView, ListView, DetailView
 from project.model_choices import ProductCacheKeys
 from .models import Product, Category
 from products.model_forms import ImportCSVForm
+from .tasks import parse_products
 
 
 class ProductsView(ListView):
@@ -70,7 +71,11 @@ class ProductDetail(DetailView):
                 % {"verbose_name": queryset.model._meta.verbose_name}
             )
         return obj
-
+    '''
+    def get(self, request, *args, **kwargs):
+        parse_products()
+        return super(ProductDetail, self).get(request=request, *args, **kwargs)
+    '''
 
 class ExportCSVView(View):
     @method_decorator(login_required())
