@@ -13,7 +13,7 @@ from project.celery import app
 def parse_products():
     products_list = parser_client.parse()
     if products_list:
-        save_parser_result(products_list)
+        save_parser_result.delay(products_list)
 
 
 @app.task

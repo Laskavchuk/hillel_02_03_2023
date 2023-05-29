@@ -214,6 +214,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_SUBJECT_PREFIX = 'Shop - '
 
 try:
-    from settings_local import *  # noqa
+    from project.settings_local import *  # noqa
 except ImportError:
     ...
