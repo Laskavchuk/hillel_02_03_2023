@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-15 09:43+0300\n"
-"PO-Revision-Date: 2023-05-15 09:44+0300\n"
-"Last-Translator:   <maksim.laskavcuk@gmail.com>\n"
+"POT-Creation-Date: 2023-06-01 10:58+0300\n"
+"PO-Revision-Date: 2023-06-01 11:00+0300\n"
+"Last-Translator: Максим Ласкавчук <maksim.laskavcuk@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: .\accounts\model_forms.py:28
+#: .\accounts\model_forms.py:31
 msgid "Invalid phone number"
 msgstr "Неправильний номер телефону"
 
-#: .\accounts\model_forms.py:35
+#: .\accounts\model_forms.py:40
 msgid "Email already exist."
 msgstr "Електронна пошта вже існує."
 
-#: .\accounts\model_forms.py:53
+#: .\accounts\model_forms.py:93
 #, python-format
 msgid ""
 "Please enter a correct %(username)s or phone and password. Note that both "
@@ -36,15 +36,15 @@ msgstr ""
 "Будь ласка, введіть правильні %(username)s або телефон і пароль. Зверніть "
 "увагу, що обидва поля можуть бути чутливими до регістру."
 
-#: .\accounts\model_forms.py:57
+#: .\accounts\model_forms.py:97
 msgid "This account is inactive."
 msgstr "Цей обліковий запис неактивний."
 
-#: .\accounts\model_forms.py:72
+#: .\accounts\model_forms.py:112
 msgid "Confirmation code has expired. We sent you a new code"
 msgstr "Термін дії коду підтвердження закінчився. Ми надіслали вам новий код"
 
-#: .\accounts\model_forms.py:75
+#: .\accounts\model_forms.py:115
 msgid "Invalid code"
 msgstr "Неправильний код"
 
@@ -90,15 +90,23 @@ msgstr ""
 msgid "users"
 msgstr ""
 
-#: .\accounts\views.py:25
-msgid "Registration success!"
-msgstr "Реєстрація успішна!"
+#: .\accounts\tasks.py:26
+msgid "Registration {context[\"site_name\"]}"
+msgstr ""
 
 #: .\accounts\views.py:34
+msgid ""
+"We will send email with registration link. Please follow link and continue "
+"your registration flow."
+msgstr ""
+"Ми надішлемо електронного листа з посиланням для реєстрації. Будь ласка, "
+"перейдіть за посиланням та продовжте реєстрацію."
+
+#: .\accounts\views.py:61
 msgid "Welcome back!"
 msgstr "Ласкаво просимо назад!"
 
-#: .\accounts\views.py:49
+#: .\accounts\views.py:76
 msgid "Phone number confirmed!"
 msgstr "Номер телефону підтверджено!"
 
@@ -120,7 +128,7 @@ msgstr "Відгук додано!"
 
 #: .\main\views.py:23
 msgid "The message has been sent!"
-msgstr ""
+msgstr "Повідомлення надіслано!"
 
 #: .\orders\views.py:43
 msgid "Discount updated successfully"
@@ -245,7 +253,7 @@ msgstr "Додати в кошик."
 
 #: .\templates\parts\category_menu.html:5
 msgid "Categories"
-msgstr ""
+msgstr "Категорії"
 
 #: .\templates\parts\footer.html:6
 msgid "Best e-store ever."
@@ -271,17 +279,34 @@ msgstr "Додати"
 msgid "Download"
 msgstr "Завантажити"
 
-#: .\templates\parts\header.html:50
-msgid "Confirm Phone Number"
-msgstr "Підтвердження номеру телефону"
-
-#: .\templates\parts\header.html:100 .\templates\registration\login.html:5
+#: .\templates\parts\header.html:95 .\templates\registration\login.html:5
 msgid "Login"
 msgstr "Вхід"
 
-#: .\templates\parts\header.html:104
+#: .\templates\parts\header.html:99
+#: .\templates\registration\registration_email.html:6
 msgid "Registration"
 msgstr "Реєстрація"
+
+#: .\templates\parts\profile.html:34
+#: .\templates\registration\password_reset_confirm.html:6
+#: .\templates\registration\password_reset_form.html:5
+msgid "Password reset"
+msgstr ""
+
+#: .\templates\parts\profile.html:35
+#: .\templates\registration\password_change_done.html:5
+#: .\templates\registration\password_change_form.html:5
+msgid "Password change"
+msgstr ""
+
+#: .\templates\parts\profile.html:37
+msgid "Confirm Phone Number"
+msgstr "Підтвердження номеру телефону"
+
+#: .\templates\parts\profile.html:39
+msgid "Edit"
+msgstr "Редагувати"
 
 #: .\templates\products\product_list.html:37
 msgid "Including:"
@@ -312,6 +337,69 @@ msgstr "Ще не маєте облікового запису?"
 msgid "Signup"
 msgstr "Реєстрація"
 
+#: .\templates\registration\password_change_done.html:6
+msgid "Your password was changed."
+msgstr ""
+
+#: .\templates\registration\password_change_form.html:6
+msgid ""
+"Please enter your old password, for security’s sake, and then enter your new"
+" password twice so we can verify you typed it in correctly."
+msgstr ""
+
+#: .\templates\registration\password_change_form.html:9
+#: .\templates\registration\password_reset_confirm.html:11
+msgid "Change my password"
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:5
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:7
+msgid "Log in"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:7
+msgid ""
+"Please enter your new password twice, so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:16
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:5
+msgid "Password reset sent"
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:6
+msgid ""
+"We’ve emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:7
+msgid ""
+"If you don’t receive an email, please make sure you’ve entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:8
+msgid "Reset"
+msgstr ""
+
+#: .\templates\registration\registration_email.html:10
+msgid "Folow link to continue registration:"
+msgstr ""
+
+#: .\templates\registration\registration_email.html:15
+msgid "Thanks for using our site!"
+msgstr ""
+
 #: .\templates\registration\signup.html:13
 msgid "Already have an account?"
 msgstr "Вже маєте обліковий запис?"
@@ -320,11 +408,35 @@ msgstr "Вже маєте обліковий запис?"
 msgid "Sign in"
 msgstr "Увійдіть в систему"
 
+#, fuzzy
+#~ msgid "Duration"
+#~ msgstr "Рейтинг"
+
+#, fuzzy
+#~ msgid "Email address"
+#~ msgstr "Електронна пошта вже існує."
+
+#, fuzzy
+#~ msgid "Floating point number"
+#~ msgstr "Неправильний номер телефону"
+
+#, fuzzy
+#~ msgid "Enter a whole number."
+#~ msgstr "Неправильний номер телефону"
+
+#, fuzzy
+#~ msgid "Enter a valid duration."
+#~ msgstr "Валідація телефону"
+
+#, fuzzy
+#~ msgid "Clear"
+#~ msgstr "Очистити кошик"
+
+#~ msgid "Registration success!"
+#~ msgstr "Реєстрація успішна!"
+
 #~ msgid "text"
 #~ msgstr "Текст"
-
-#~ msgid "rating"
-#~ msgstr "Рейтинг"
 
 #~ msgid "Exporting successfully"
 #~ msgstr "Успішний експорт"
