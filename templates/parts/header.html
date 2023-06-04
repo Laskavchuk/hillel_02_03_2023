@@ -25,10 +25,6 @@
                             <a class="nav-link active" aria-current="page"
                                href="{% url 'feedbacks' %}">{% translate 'Feedbacks' %}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'logout' %}">{% translate 'Logout' %}</a>
-                        </li>
                             {% if request.resolver_match.url_name == 'products' %}
                             {% include 'parts/category_menu.html' %}
                             <li class="nav-item dropdown">
