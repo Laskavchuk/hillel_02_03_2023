@@ -2,6 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
+    {% include 'parts/filter_form.html' %}
     {% for product in products %}
         <div class="col-12 {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %} mt-3 mt-lg-5">
             <div class="card">
@@ -50,7 +51,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="product_id"
                                value="{{ product.id }}">
-                        <input type="submit" value="Add to cart"
+                        <input type="submit" value="{% translate 'Add to cart' %}"
                                class="btn btn-warning w-100">
                     </form>
                     <a href="{% url 'add_or_remove_favorite' product.id %}"
@@ -67,6 +68,9 @@
             </div>
         </div>
     {% endfor %}
+    {% if products %}
+        {% include 'parts/paginator.html' %}
+    {% endif %}
 {% endblock content %}
 
 

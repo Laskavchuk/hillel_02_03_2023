@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'django_celery_results',
     'django_extensions',
+    'django_filters',
     # internal
     'products',
     'orders',

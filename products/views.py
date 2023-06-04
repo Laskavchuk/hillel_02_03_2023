@@ -6,17 +6,22 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import FormView, ListView, DetailView
+from django_filters.views import FilterView
 
 from project.model_choices import ProductCacheKeys
+from .filters import ProductFilter
 from .models import Product, Category
 from products.model_forms import ImportCSVForm
-from .tasks import parse_products
+# from .tasks import parse_products
 
 
-class ProductsView(ListView):
+class ProductsView(FilterView):
+    template_name = 'products/product_list.html'
     context_object_name = 'products'
     model = Product
     ordering = 'created_at'
+    paginate_by = 8
+    filterset_class = ProductFilter
 
     def get_queryset(self):
         queryset = cache.get(ProductCacheKeys.PRODUCTS)
@@ -76,6 +81,7 @@ class ProductDetail(DetailView):
         parse_products()
         return super(ProductDetail, self).get(request=request, *args, **kwargs)
     '''
+
 
 class ExportCSVView(View):
     @method_decorator(login_required())
