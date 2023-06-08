@@ -4,7 +4,7 @@ from apis.products.views import ProductList, ProductSingle
 
 urlpatterns = [
     path('products/', ProductList.as_view()),
-    path('products/<uuid:pk>/', ProductSingle.as_view()),
+    path('products/<uuid:pk>/', ProductRetrieve.as_view()),
 ]
 
 """
