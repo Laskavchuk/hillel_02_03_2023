@@ -11,7 +11,7 @@ class ProductList(generics.ListAPIView):
     permission_classes = [AllowAny]
 
 
-class ProductSingle(generics.RetrieveAPIView):
+class ProductRetrieve(generics.RetrieveAPIView):
     queryset = Product.objects.prefetch_related('categories').all()
     serializer_class = ProductListSerializer
     permission_classes = [AllowAny]
