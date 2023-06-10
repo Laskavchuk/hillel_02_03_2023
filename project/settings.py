@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_filters',
     'rest_framework',
+    'drf_yasg',
     # internal
     'products',
     'orders',
