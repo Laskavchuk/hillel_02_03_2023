@@ -1,11 +1,15 @@
-from django.urls import path
+from apis.products.views import ProductViewSet
 
-from apis.products.views import ProductList, ProductRetrieve
+from rest_framework.routers import SimpleRouter
 
-urlpatterns = [
-    path('products/', ProductList.as_view()),
-    path('products/<uuid:pk>/', ProductRetrieve.as_view()),
-]
+router = SimpleRouter()
+router.register(r'products', ProductViewSet, basename='products')
+urlpatterns = router.urls
+
+# urlpatterns = [
+#    path('products/', ProductList.as_view()),
+#    path('products/<uuid:pk>/', ProductRetrieve.as_view()),
+# ]
 
 """
 GET /api/v1/products/
