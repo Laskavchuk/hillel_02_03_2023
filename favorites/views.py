@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
@@ -8,6 +8,8 @@ from django.views.generic import ListView, DetailView
 from favorites.models import Favorite
 from products.models import Product
 from django.utils.translation import gettext_lazy as _
+
+from project.decorators import ajax_required
 
 
 class FavoriteView(ListView):
@@ -46,3 +48,22 @@ class FavoriteAddOrRemoveView(DetailView):
         else:
             messages.success(self.request, _('Product added!'))
         return HttpResponseRedirect(reverse_lazy('products'))
+
+
+class AJAXAddOrRemoveFavorite(DetailView):
+    model = Product
+
+    @method_decorator(login_required)
+    @method_decorator(ajax_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        favorite, created = Favorite.objects.get_or_create(
+            product=self.object,
+            user=request.user
+        )
+        if not created:
+            favorite.delete()
+        return JsonResponse({'is_favorite': created})

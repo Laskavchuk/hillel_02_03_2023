@@ -1,6 +1,7 @@
 import csv
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.cache import cache
+from django.db.models import OuterRef, Exists
 from django.http import HttpResponse, Http404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -8,6 +9,7 @@ from django.views import View
 from django.views.generic import FormView, ListView, DetailView
 from django_filters.views import FilterView
 
+from favorites.models import Favorite
 from project.model_choices import ProductCacheKeys
 from .filters import ProductFilter
 from .models import Product, Category
@@ -36,6 +38,13 @@ class ProductsView(FilterView):
             if isinstance(ordering, str):
                 ordering = (ordering,)
             queryset = queryset.order_by(*ordering)
+            favorite = Favorite.objects.filter(
+                product=OuterRef('pk'),
+                user=self.request.user
+            )
+            queryset = queryset.annotate(
+                is_favorite=Exists(favorite)
+            )
 
         return queryset
 
