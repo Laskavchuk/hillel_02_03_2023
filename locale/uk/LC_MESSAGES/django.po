@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-01 10:58+0300\n"
-"PO-Revision-Date: 2023-06-01 11:00+0300\n"
+"POT-Creation-Date: 2023-06-18 16:48+0300\n"
+"PO-Revision-Date: 2023-06-18 16:57+0300\n"
 "Last-Translator: Максим Ласкавчук <maksim.laskavcuk@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -18,6 +18,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
+
+#: .\accounts\admin.py:13
+msgid "Personal info"
+msgstr ""
+
+#: .\accounts\admin.py:15
+msgid "Permissions"
+msgstr ""
+
+#: .\accounts\admin.py:26
+msgid "Important dates"
+msgstr ""
 
 #: .\accounts\model_forms.py:31
 msgid "Invalid phone number"
@@ -94,7 +106,7 @@ msgstr ""
 msgid "Registration {context[\"site_name\"]}"
 msgstr ""
 
-#: .\accounts\views.py:34
+#: .\accounts\views.py:37
 msgid ""
 "We will send email with registration link. Please follow link and continue "
 "your registration flow."
@@ -102,19 +114,23 @@ msgstr ""
 "Ми надішлемо електронного листа з посиланням для реєстрації. Будь ласка, "
 "перейдіть за посиланням та продовжте реєстрацію."
 
-#: .\accounts\views.py:61
+#: .\accounts\views.py:64
 msgid "Welcome back!"
 msgstr "Ласкаво просимо назад!"
 
-#: .\accounts\views.py:76
+#: .\accounts\views.py:79
 msgid "Phone number confirmed!"
 msgstr "Номер телефону підтверджено!"
 
-#: .\favorites\views.py:45 .\orders\views.py:62
+#: .\accounts\views.py:142
+msgid "phone"
+msgstr "Телефон"
+
+#: .\favorites\views.py:47 .\orders\views.py:62
 msgid "Product removed!"
 msgstr "Продукт вилучено!"
 
-#: .\favorites\views.py:47 .\orders\views.py:60
+#: .\favorites\views.py:49 .\orders\views.py:60
 msgid "Product added!"
 msgstr "Товар додано!"
 
@@ -150,11 +166,11 @@ msgstr "Заплатити вдалося"
 msgid "ERROR"
 msgstr "Помилка"
 
-#: .\project\settings.py:155
+#: .\project\settings.py:158
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: .\project\settings.py:156
+#: .\project\settings.py:159
 msgid "English"
 msgstr "Англійська"
 
@@ -166,19 +182,19 @@ msgstr "Зв'яжіться з нами"
 msgid "Send"
 msgstr "Надіслати"
 
-#: .\templates\favorites\favorites_list.html:75
+#: .\templates\favorites\favorites_list.html:64
 msgid "Favorite list is empty"
 msgstr "Список обраного порожній"
 
-#: .\templates\favorites\favorites_list.html:76
+#: .\templates\favorites\favorites_list.html:65
 msgid "Go to"
 msgstr "Перейдіть до"
 
-#: .\templates\favorites\favorites_list.html:76
+#: .\templates\favorites\favorites_list.html:65
 msgid "products"
 msgstr "Продуктів"
 
-#: .\templates\favorites\favorites_list.html:77
+#: .\templates\favorites\favorites_list.html:66
 msgid "page and add something to favorite."
 msgstr "і додайте щось до обраного."
 
@@ -249,11 +265,45 @@ msgstr "Ваш кошик порожній."
 
 #: .\templates\orders\cart.html:112
 msgid "Add to cart."
-msgstr "Додати в кошик."
+msgstr "Додати в кошик"
 
 #: .\templates\parts\category_menu.html:5
 msgid "Categories"
 msgstr "Категорії"
+
+#: .\templates\parts\filter_form.html:9
+msgid "Filtering:"
+msgstr "Філтрування"
+
+#: .\templates\parts\filter_form.html:12
+#| msgid "Product added!"
+msgid "Product Name:"
+msgstr "Назва товару"
+
+#: .\templates\parts\filter_form.html:16
+#| msgid "Products"
+msgid "Product SKU:"
+msgstr "SKU товару"
+
+#: .\templates\parts\filter_form.html:20
+msgid "Price min-max:"
+msgstr "Ціна min-max"
+
+#: .\templates\parts\filter_form.html:24
+msgid "Start Date after-before"
+msgstr "Дата початку після-до"
+
+#: .\templates\parts\filter_form.html:28
+msgid "New:"
+msgstr "Новий"
+
+#: .\templates\parts\filter_form.html:32
+msgid "Filter"
+msgstr "Фіртувати"
+
+#: .\templates\parts\filter_form.html:33
+msgid "Reset filters"
+msgstr "Скидання фільтрів"
 
 #: .\templates\parts\footer.html:6
 msgid "Best e-store ever."
@@ -267,50 +317,44 @@ msgstr "Контакти"
 msgid "Products"
 msgstr "Продукти"
 
-#: .\templates\parts\header.html:30
-msgid "Logout"
-msgstr "Вихід"
-
-#: .\templates\parts\header.html:39
+#: .\templates\parts\header.html:35
 msgid "Import"
 msgstr "Додати"
 
-#: .\templates\parts\header.html:40
+#: .\templates\parts\header.html:36
 msgid "Download"
 msgstr "Завантажити"
 
-#: .\templates\parts\header.html:95 .\templates\registration\login.html:5
+#: .\templates\parts\header.html:91 .\templates\registration\login.html:5
 msgid "Login"
 msgstr "Вхід"
 
-#: .\templates\parts\header.html:99
+#: .\templates\parts\header.html:95
 #: .\templates\registration\registration_email.html:6
 msgid "Registration"
 msgstr "Реєстрація"
 
-#: .\templates\parts\profile.html:34
-#: .\templates\registration\password_reset_confirm.html:6
-#: .\templates\registration\password_reset_form.html:5
-msgid "Password reset"
-msgstr ""
-
 #: .\templates\parts\profile.html:35
-#: .\templates\registration\password_change_done.html:5
-#: .\templates\registration\password_change_form.html:5
-msgid "Password change"
-msgstr ""
-
-#: .\templates\parts\profile.html:37
 msgid "Confirm Phone Number"
 msgstr "Підтвердження номеру телефону"
 
-#: .\templates\parts\profile.html:39
+#: .\templates\parts\profile.html:37
+#: .\templates\registration\edit_profile.html:26
 msgid "Edit"
 msgstr "Редагувати"
 
-#: .\templates\products\product_list.html:37
+#: .\templates\parts\profile.html:38
+msgid "Logout"
+msgstr "Вихід"
+
+#: .\templates\products\product_list.html:43
 msgid "Including:"
 msgstr "Включає"
+
+#: .\templates\products\product_list.html:59
+#| msgid "Add to cart."
+msgid "Add to cart"
+msgstr "Додати в кошик"
 
 #: .\templates\registration\code.html:5
 msgid "Phone validation"
@@ -328,6 +372,16 @@ msgstr "Підтвердити"
 msgid "Later"
 msgstr "Пізніше"
 
+#: .\templates\registration\edit_profile.html:7
+msgid "Edit Profile"
+msgstr "Редагування профілю"
+
+#: .\templates\registration\edit_profile.html:27
+#: .\templates\registration\password_change_done.html:5
+#: .\templates\registration\password_change_form.html:5
+msgid "Password change"
+msgstr "Зміна паролю"
+
 #: .\templates\registration\login.html:13
 msgid "Don't have an account yet?"
 msgstr "Ще не маєте облікового запису?"
@@ -336,6 +390,16 @@ msgstr "Ще не маєте облікового запису?"
 #: .\templates\registration\signup.html:5
 msgid "Signup"
 msgstr "Реєстрація"
+
+#: .\templates\registration\login.html:17
+msgid "Forget password?"
+msgstr "Забули пароль?"
+
+#: .\templates\registration\login.html:18
+#: .\templates\registration\password_reset_confirm.html:6
+#: .\templates\registration\password_reset_form.html:5
+msgid "Password reset"
+msgstr "Скидання паролю"
 
 #: .\templates\registration\password_change_done.html:6
 msgid "Your password was changed."
