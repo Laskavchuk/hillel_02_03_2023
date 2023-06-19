@@ -3,7 +3,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from accounts.views import RegistrationView, LoginView, PhoneValidationView, \
-    RegistrationConfirmView
+    RegistrationConfirmView, UserEditView
 
 urlpatterns = [
     # path('', include('django.contrib.auth.urls')),
@@ -15,6 +15,8 @@ urlpatterns = [
         PhoneValidationView.as_view(),
         name='phone_validation'
     ),
+
+    path('edit_profile/', UserEditView.as_view(), name='edit_profile'),
 
     path(
         "registration/<uidb64>/<token>/",

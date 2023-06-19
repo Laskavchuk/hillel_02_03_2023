@@ -3,12 +3,14 @@ from random import randint
 from django.contrib import messages
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.tokens import default_token_generator
 from django.core.cache import cache
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.http import urlsafe_base64_decode
+from django.views import generic
 from django.views.generic import FormView, RedirectView
 from django.contrib.auth.views import LoginView as AuthLoginView
 from accounts.model_forms import RegistrationForm, AuthenticationForm, \
@@ -127,3 +129,22 @@ class RegistrationConfirmView(RedirectView):
         self.user.is_active = True
         self.user.save()
         return super().get(request, *args, **kwargs)
+
+
+class CustomUserChangeForm(UserChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.pop('password')
+
+    class Meta(UserChangeForm.Meta):
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'phone')
+
+
+class UserEditView(generic.UpdateView):
+    form_class = CustomUserChangeForm
+    template_name = 'registration/edit_profile.html'
+    success_url = reverse_lazy('main')
+
+    def get_object(self, queryset=None):
+        return self.request.user

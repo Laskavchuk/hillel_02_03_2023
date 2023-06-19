@@ -31,11 +31,10 @@
         {{ user.first_name}}
     </a>
     <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'password_change' %}">{% translate 'Password change' %}</a></li>
             {% if not user.is_phone_valid %}
             <li><a class="dropdown-item text-danger" href="{% url 'phone_validation' %}">{% translate 'Confirm Phone Number' %}</a></li>
             {% endif %}
-            <li><a class="dropdown-item" href="#">{% translate 'Edit' %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'edit_profile' %}">{% translate 'Edit' %}</a></li>
             <li><a class="dropdown-item" href="{% url 'logout' %}">{% translate 'Logout' %}</a></li>
     </ul>
 </li>
