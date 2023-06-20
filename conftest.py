@@ -5,6 +5,7 @@ import faker
 import pytest
 import factory
 
+from currencies.models import CurrencyHistory
 from products.models import Category, Product
 from project.constants import DECIMAL_PLACES
 
@@ -82,3 +83,21 @@ def login_client(db, client):
         return client, user
 
     return login_user
+
+
+@register
+class CurrencyHistoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = CurrencyHistory
+
+    code = factory.LazyAttribute(lambda x: fake.word())
+    buy = factory.LazyAttribute(lambda x: fake.pydecimal(
+        min_value=0,
+        left_digits=DECIMAL_PLACES,
+        right_digits=DECIMAL_PLACES,
+    ))
+    sale = factory.LazyAttribute(lambda x: fake.pydecimal(
+        min_value=0,
+        left_digits=DECIMAL_PLACES,
+        right_digits=DECIMAL_PLACES,
+    ))
