@@ -2,7 +2,7 @@ import re
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, \
-    AuthenticationForm as AuthAuthenticationForm
+    AuthenticationForm as AuthAuthenticationForm, UserChangeForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.cache import cache
@@ -118,3 +118,28 @@ class PhoneValidationForm(forms.Form):
         user = User.objects.get(id=self.user_id)
         user.is_phone_valid = True
         user.save()
+
+
+class CustomUserChangeForm(UserChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.pop('password')
+
+    class Meta(UserChangeForm.Meta):
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'phone')
+
+    def clean_phone(self):
+        phone_number = self.cleaned_data.get('phone')
+        if phone_number:
+            if not re.fullmatch(
+                    r'^\+?\d{1,4}[-.\s]?[(]?\d{1,4}[)]?[-.\s]?\d{1,3}[-.\s]?\d{1,3}[-.\s]?\d{1,3}$',# noqa
+                    phone_number
+            ):
+                raise ValidationError(_('Invalid phone number'))
+            phone_number = re.sub(r'[-.\s+()]', '', phone_number)
+            try:
+                User.objects.get(phone=self.cleaned_data['phone'])
+            except User.DoesNotExist:
+                return phone_number
+            raise ValidationError(_('Phone already exist.'))

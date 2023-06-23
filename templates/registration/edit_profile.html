@@ -3,29 +3,64 @@
 {% load i18n %}
 {% block content %}
     <div class="container">
-            <div class="col-12 col-lg-4 offset-lg-4 my-3 my-lg-5">
-                <h2>{% translate 'Edit Profile' %}</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group mb-3">
-                        <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
-                         {{ form.first_name |attr:"class:form-control-sm" }}
+        <div class="col-12 col-lg-4 offset-lg-4 my-3 my-lg-5">
+            <h2>{% translate 'Edit Profile' %}</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field.field.field_type == 'hidden' %}
+                        {{ field }}
+                    {% elif field|widget_type == 'textarea' %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label mt-3">
+                                {{ field.label }}
+                            </label>
+                            <textarea id="{{ field.id_for_label }}"
+                                      class="form-control"
+                                      name="{{ field.name }}"
+                                      {% if field.field.required %}required{% endif %}>{{ field.value }}</textarea>
+                        </div>
+                    {% else %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label mt-3">
+                                {{ field.label }}
+                            </label>
+                            <input type="{{ field.field.widget.input_type }}"
+                                   class="form-control"
+                                   id="{{ field.auto_id }}"
+                                   name="{{ field.name }}"
+                                   {% if field.field.required %}required{% endif %}
+                                   aria-describedby="{{ field.name }}Help"
+                                   value="{{ field.value }}">
+                            {% if field.help_text %}
+                                <div id="{{ field.name }}Help" class="form-text">
+                                    {{ field.help_text }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="mb-2">
+                            <ul>
+                                {% for error in field.errors %}
+                                    <li class="text-danger small">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% if form.non_field_errors %}
+                    <div class="mb-2">
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                                <li class="text-danger small">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
-                         {{ form.last_name |attr:"class:form-control-sm" }}
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-                         {{ form.email |attr:"class:form-control-sm" }}
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
-                         {{ form.phone |attr:"class:form-control-sm" }}
-                    </div>
-                    <input type="submit" class="btn btn-primary pe-auto mt-2" value="{% translate 'Edit' %}">
-                    <a class="btn btn-primary pe-auto mt-2" href="{% url 'password_change' %}">{% translate 'Password change' %}</a>
-                </form>
-            </div>
+                {% endif %}
+                <input type="submit" class="btn btn-primary pe-auto mt-2" value="{% translate 'Edit' %}">
+                <a class="btn btn-primary pe-auto mt-2" href="{% url 'password_change' %}">{% translate 'Password change' %}</a>
+            </form>
         </div>
+    </div>
 {% endblock content %}
