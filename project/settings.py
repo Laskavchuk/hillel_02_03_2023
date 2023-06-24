@@ -36,6 +36,7 @@ SECRET_KEY = env('SECRET_KEY', default='SECRET_KEY')
 DEBUG = env.bool('DEBUG', default='True')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
 ADMINS = (('Admin', 'maksim.laskavcuk@gmail.com'), )
 ENABLE_SILK = env.bool('ENABLE_SILK', default=False)
 
