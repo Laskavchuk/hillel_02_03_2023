@@ -128,18 +128,3 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
         fields = ('first_name', 'last_name', 'email', 'phone')
-
-    def clean_phone(self):
-        phone_number = self.cleaned_data.get('phone')
-        if phone_number:
-            if not re.fullmatch(
-                    r'^\+?\d{1,4}[-.\s]?[(]?\d{1,4}[)]?[-.\s]?\d{1,3}[-.\s]?\d{1,3}[-.\s]?\d{1,3}$',# noqa
-                    phone_number
-            ):
-                raise ValidationError(_('Invalid phone number'))
-            phone_number = re.sub(r'[-.\s+()]', '', phone_number)
-            try:
-                User.objects.get(phone=self.cleaned_data['phone'])
-            except User.DoesNotExist:
-                return phone_number
-            raise ValidationError(_('Phone already exist.'))

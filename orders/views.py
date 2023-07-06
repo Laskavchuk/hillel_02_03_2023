@@ -26,7 +26,7 @@ class CartView(GetCurrentOrderMixin, FormView):
         order = self.get_object()
         context.update({
             'order': order,
-            'order_items': order.order_items.all()
+            'order_items': order.order_items.select_related('product').all()
         })
         return context
 
@@ -44,7 +44,6 @@ class CartView(GetCurrentOrderMixin, FormView):
         messages.success(self.request, _('Recalculate succeeded'))
         return super().form_valid(form)
 
-
 class CartActionView(GetCurrentOrderMixin, RedirectView):
     url = reverse_lazy('products')
 
@@ -53,7 +52,8 @@ class CartActionView(GetCurrentOrderMixin, RedirectView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        form = CartActionForm(request.POST, instance=self.get_object())
+        form = CartActionForm(request.POST, instance=self.get_object(),
+                              order_item_id=request.GET.get('order_item_id'))
         if form.is_valid():
             form.action(kwargs.get('action'))
             if kwargs.get('action') == 'add':
@@ -67,4 +67,3 @@ class CartActionView(GetCurrentOrderMixin, RedirectView):
             else:
                 messages.error(self.request, _('ERROR'))
         return self.get(request, *args, **kwargs)
-

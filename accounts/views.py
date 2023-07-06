@@ -144,10 +144,5 @@ class UserEditView(generic.UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        user = self.request.user
-        phone_number = form.cleaned_data.get('phone')
-        if phone_number:
-            user.is_phone_valid = False
-        user.save()
         messages.success(self.request, _('Edited successfully!'))
         return response

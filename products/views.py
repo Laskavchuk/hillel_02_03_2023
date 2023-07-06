@@ -40,7 +40,7 @@ class ProductsView(FilterView):
             queryset = queryset.order_by(*ordering)
             favorite = Favorite.objects.filter(
                 product=OuterRef('pk'),
-                user=self.request.user
+                # user=self.request.user
             )
             queryset = queryset.annotate(
                 is_favorite=Exists(favorite)
@@ -85,11 +85,11 @@ class ProductDetail(DetailView):
                 % {"verbose_name": queryset.model._meta.verbose_name}
             )
         return obj
-    '''
-    def get(self, request, *args, **kwargs):
-        parse_products()
-        return super(ProductDetail, self).get(request=request, *args, **kwargs)
-    '''
+
+    # def get(self, request, *args, **kwargs):
+    #     parse_products()
+    #     return super(ProductDetail, self).get(request=request, *args, **kwargs)
+
 
 
 class ExportCSVView(View):
@@ -140,9 +140,12 @@ class ImportCSV(FormView):
         return super().form_valid(form)
 
 
-class ProductByCategory(ListView):
+class ProductByCategory(FilterView):
+    template_name = 'products/product_list.html'
     context_object_name = 'products'
     model = Product
+    paginate_by = 8
+    filterset_class = ProductFilter
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

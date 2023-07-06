@@ -2,7 +2,14 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
-    {% include 'parts/filter_form.html' %}
+<div class="mt-3 btn-group dropstart">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="max-width: 50px;">
+    <i class="bi bi-funnel"></i>
+  </button>
+  <ul class="dropdown-menu">
+    <li><button class="dropdown-item" type="button"><span>{% include 'parts/filter_form.html' %}</span></button></li>
+  </ul>
+</div>
     {% for product in products %}
         <div class="col-12 {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %} mt-3 mt-lg-5">
             <div class="card">
@@ -35,7 +42,8 @@
                         {{ product.calculate_price }} UAH
                     </p>
                     <p>
-                         <a href="javascript:void(0)" class="favorite-link" data-product_id="{{ product.id }}">
+                        <a href="javascript:void(0)" class="favorite-link"
+                           data-product_id="{% url 'ajax_add_or_remove_favorite' product.id %}">
                             <i class="bi {% if product.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                         </a>
                     </p>
@@ -57,7 +65,7 @@
                         <input type="hidden" name="product_id"
                                value="{{ product.id }}">
                         <input type="submit" value="{% translate 'Add to cart' %}"
-                               class="btn btn-warning w-100">
+                               class="btn btn-secondary w-100">
                     </form>
                 </div>
             </div>

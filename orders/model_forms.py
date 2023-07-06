@@ -52,6 +52,7 @@ class CartActionForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('instance')
+        self.order_item_id = kwargs.pop('order_item_id', None)
         super().__init__(*args, **kwargs)
 
     def clean_product_id(self):
@@ -61,13 +62,13 @@ class CartActionForm(forms.Form):
             except Product.DoesNotExist:
                 raise ValidationError('Wrong product id.')
 
-    def clean_order_item_id(self):
-        if self.cleaned_data.get('order_item_id') and \
+    def clean(self):
+        if self.order_item_id and \
                 not self.instance.order_items.filter(
-                    id=self.cleaned_data['order_item_id']
+                    id=self.order_item_id
                 ).exists():
             raise ValidationError('Wrong item id.')
-        return self.cleaned_data['order_item_id']
+        return self.cleaned_data
 
     def action(self, action):
         if action == 'add':
@@ -84,7 +85,7 @@ class CartActionForm(forms.Form):
 
         if action == 'remove':
             OrderItem.objects.filter(
-                id=self.cleaned_data['order_item_id']
+                id=self.order_item_id
             ).delete()
         if action == 'clear':
-            self.instance.delete()
+            self.instance.order_items.all().delete()

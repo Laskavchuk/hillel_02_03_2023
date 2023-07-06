@@ -44,10 +44,8 @@
                                 {{ item.sub_total }}
                             </td>
                             <td>
-                                <input type="hidden" name="order_item_id"
-                                       value="{{ item.id }}">
                                 <input type="submit" value="{% translate 'Remove' %}"
-                                       formaction="{% url 'cart_action' 'remove' %}"
+                                       formaction="{% url 'cart_action' 'remove' %}?order_item_id={{ item.id }}"
                                        class="btn btn-danger w-100">
                             </td>
                         </tr>
@@ -87,7 +85,7 @@
             <form method="post" action="{% url 'cart_action' 'pay' %}">
                 {% csrf_token %}
                 <input type="submit" value="{% translate 'Pay order' %}"
-                       class="btn btn-warning w-100">
+                       class="btn btn-secondary w-100">
             </form>
             {% if form.errors %}
                 <div class="mb-2">

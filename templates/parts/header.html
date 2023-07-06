@@ -1,11 +1,16 @@
 {% load static %}
 {% load i18n %}
 <header>
-    <nav class="navbar navbar-expand-lg bg-warning">
+    <nav class="navbar navbar-expand-lg bg-secondary">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'main' %}">
                 <img class="logo" src="{% static 'images/logo.png' %}"
                      alt="logo">
+                {% if request.resolver_match.url_name == 'main' %}
+                    <strong>Gamex-shop</strong>
+                {% else %}
+                    Gamex-shop
+                {% endif %}
             </a>
             <button class="navbar-toggler" type="button"
                     data-bs-toggle="collapse"
@@ -16,15 +21,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'products' %}">
+                                {% if request.resolver_match.url_name == 'products' %}
+                                    <strong>{% translate 'Products' %}</strong>
+                                {% else %}
+                                    {% translate 'Products' %}
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'feedbacks' %}">
+                                {% if request.resolver_match.url_name == 'feedbacks' %}
+                                    <strong>{% translate 'Feedbacks' %}</strong>
+                                {% else %}
+                                    {% translate 'Feedbacks' %}
+                                {% endif %}
+                            </a>
+                        </li>
                     {% if request.user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'products' %}">{% translate 'Products' %}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'feedbacks' %}">{% translate 'Feedbacks' %}</a>
-                        </li>
                             {% if request.resolver_match.url_name == 'products' %}
                             {% include 'parts/category_menu.html' %}
                             <li class="nav-item dropdown">
@@ -38,6 +53,11 @@
                             </li>
                             {% endif %}
                         {% include 'parts/profile.html' %}
+                    {% endif %}
+                        {% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'products_by_category' %}
+                            {% include 'parts/search.html' %}
+                        {% endif %}
+                    {% if request.user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page"
                                href="{% url 'cart' %}">
@@ -83,13 +103,23 @@
                         </form>
                     </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'login' %}">{% translate 'Login' %}</a>
+                        <li class="nav-item ms-auto">
+                            <a class="nav-link active" aria-current="page" href="{% url 'login' %}">
+                                {% if request.resolver_match.url_name == 'login' %}
+                                    <strong>{% translate 'Login' %}</strong>
+                                {% else %}
+                                    {% translate 'Login' %}
+                                {% endif %}
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                               href="{% url 'registration' %}">{% translate 'Registration' %}</a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'registration' %}">
+                                {% if request.resolver_match.url_name == 'registration' %}
+                                    <strong>{% translate 'Registration' %}</strong>
+                                {% else %}
+                                    {% translate 'Registration' %}
+                                {% endif %}
+                            </a>
                         </li>
                     {% endif %}
                 </ul>

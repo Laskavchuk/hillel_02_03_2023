@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load i18n %}
 {% block content %}
-<h1>{% translate 'Main page!' %}</h1>
+<h1 style="text-align: center;">{% translate 'Welcome to gamex-shop!' %}</h1>
+<img class="main" src="{% static 'images/main.jpg' %}"
+                     alt="main">
 {% endblock content %}
 

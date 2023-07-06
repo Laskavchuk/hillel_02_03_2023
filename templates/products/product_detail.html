@@ -1,54 +1,56 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div class="col-12 {% if product.products.exists %}col-lg-6{% else %}col-lg-3{% endif %} mt-3 mt-lg-5">
-        <div class="card">
-            {% if product.image %}
-                <figure class="text-center">
-                    <img src="{{ product.image.url }}"
-                         class="product-img p-3"
-                         alt="{{ product.name }}">
-                </figure>
-            {% else %}
-                <figure class="text-center">
-                    <img src="{% static 'images/logo.png' %}"
-                         class="product-img p-3"
-                         alt="{{ product.name }}">
-                </figure>
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="small">
-                    {% for category in product.categories.iterator %}
-                        <span class="text-success">{{ category.name }} </span>
-                    {% endfor %}
-                </p>
-                <p class="card-text">
-                    {{ product.description|truncatewords:16 }}
-                </p>
-                <p class="card-text">
-                    {{ product.price }}
-                </p>
-                {% if product.products.exists %}
-                    <p>Including:</p>
-                    {% for sub in product.products.iterator %}
-                        <div class="d-inline-flex flex-column rounded border p-2 m-1 sub-product">
-                            <p>{{ sub.name }}</p>
-                            <figure class="text-center d-inline">
-                                <img src="{{ sub.image.url }}"
-                                     class="product-img p-3"
-                                     alt="{{ product.name }}">
-                            </figure>
-                        </div>
-                    {% endfor %}
+    <div class="col-12 d-flex justify-content-center mt-3 mt-lg-5">
+        <div class="col-lg-6">
+            <div class="card">
+                {% if product.image %}
+                    <figure class="text-center">
+                        <img src="{{ product.image.url }}"
+                             class="product-img p-3"
+                             alt="{{ product.name }}">
+                    </figure>
+                {% else %}
+                    <figure class="text-center">
+                        <img src="{% static 'images/logo.png' %}"
+                             class="product-img p-3"
+                             alt="{{ product.name }}">
+                    </figure>
                 {% endif %}
-                <form method="post" action="{% url 'cart_action' 'add' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="product_id"
-                           value="{{ product.id }}">
-                    <input type="submit" value="Add to cart"
-                           class="btn btn-warning w-100">
-                </form>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="small">
+                        {% for category in product.categories.iterator %}
+                            <span class="text-success">{{ category.name }} </span>
+                        {% endfor %}
+                    </p>
+                    <p class="card-text">
+                        {{ product.description}}
+                    </p>
+                    <p class="card-text">
+                        {{ product.price }}
+                    </p>
+                    {% if product.products.exists %}
+                        <p>Including:</p>
+                        {% for sub in product.products.iterator %}
+                            <div class="d-inline-flex flex-column rounded border p-2 m-1 sub-product">
+                                <p>{{ sub.name }}</p>
+                                <figure class="text-center d-inline">
+                                    <img src="{{ sub.image.url }}"
+                                         class="product-img p-3"
+                                         alt="{{ product.name }}">
+                                </figure>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <form method="post" action="{% url 'cart_action' 'add' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id"
+                               value="{{ product.id }}">
+                        <input type="submit" value="Add to cart"
+                               class="btn btn-secondary w-100">
+                    </form>
+                </div>
             </div>
         </div>
     </div>
