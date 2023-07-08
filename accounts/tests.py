@@ -1,4 +1,7 @@
+import re
+
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.urls import reverse
 
 User = get_user_model()
@@ -85,8 +88,15 @@ def test_registration(client, faker):
     data['password2'] = password
     response = client.post(url, data=data, follow=True)
     assert response.status_code == 200
-    assert response.redirect_chain[0][0] == reverse('main')
+    assert response.redirect_chain[0][0] == reverse('login')
     assert response.redirect_chain[0][1] == 302
+    assert User.objects.filter(email=data['email'], is_active=False).exists()
+    uidb64, token = re.search("registration/(.*)/(.*)/",
+                              mail.outbox[0].body).groups()
+    response = client.get(reverse('registration_confirm',
+                                  args=(uidb64, token)))
+    assert response.status_code == 302
+    assert User.objects.filter(email=data['email'], is_active=True).exists()
 
     data['email'] = faker.email()
     data['password1'] = password
@@ -109,14 +119,6 @@ def test_registration(client, faker):
     response = client.post(url, data=data, follow=True)
     errors = response.context['form'].errors
     assert errors['phone'] == ['Invalid phone number']
-
-    data['password1'] = password
-    data['password2'] = password
-    data['phone'] = faker.phone_number()
-    response = client.post(url, data=data, follow=True)
-    assert response.status_code == 200
-    assert response.redirect_chain[0][0] == reverse('phone_validation')
-    assert response.redirect_chain[0][1] == 302
 
 
 def test_phone_validation(client, faker, login_client):

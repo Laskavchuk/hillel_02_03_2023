@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from pytest_factoryboy import register
@@ -21,8 +23,11 @@ def faker_fixture():
 def django_db_setup(db):
     import shutil
     from django.conf import settings
+    media_root = settings.BASE_DIR / settings.MEDIA_ROOT
+    if not os.path.exists(media_root):
+        os.mkdir(media_root)
     yield
-    #shutil.rmtree(settings.BASE_DIR / settings.MEDIA_ROOT)
+    shutil.rmtree(media_root)
 
 
 @register

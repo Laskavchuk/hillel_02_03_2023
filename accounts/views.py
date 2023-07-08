@@ -29,17 +29,13 @@ class RegistrationView(FormView):
     from_email = None
     html_email_template_name = None
     token_generator = default_token_generator
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         messages.success(self.request,
                          _('We will send email with registration link. '
                            'Please follow link and continue your '
                            'registration flow.'))
-        phone = form.cleaned_data.get('phone')
-        if phone:
-            self.success_url = reverse_lazy('phone_validation')
-        else:
-            self.success_url = reverse_lazy('main')
 
         opts = {
             "use_https": self.request.is_secure(),
