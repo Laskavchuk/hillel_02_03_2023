@@ -44,6 +44,7 @@ class CartView(GetCurrentOrderMixin, FormView):
         messages.success(self.request, _('Recalculate succeeded'))
         return super().form_valid(form)
 
+
 class CartActionView(GetCurrentOrderMixin, RedirectView):
     url = reverse_lazy('products')
 

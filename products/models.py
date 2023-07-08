@@ -82,4 +82,3 @@ class Product(LifecycleModelMixin, PKMixin):
     @hook(AFTER_UPDATE)
     def after_signal(self):
         cache.delete(ProductCacheKeys.PRODUCTS)
-

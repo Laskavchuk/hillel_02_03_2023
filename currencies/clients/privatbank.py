@@ -42,4 +42,3 @@ class PrivatBank(APIBaseClient):
 
 
 privatbank_client = PrivatBank()
-    

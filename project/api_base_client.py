@@ -18,7 +18,7 @@ class APIBaseClient:
                 url=url or self.base_url,
                 **kwargs
             )
-        except(RequestException, HTTPError) as err:
+        except (RequestException, HTTPError) as err:
             logger.error(err)
 
     def _prepare_data(self):

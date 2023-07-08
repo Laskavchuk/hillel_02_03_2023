@@ -6,7 +6,7 @@ from django.http import HttpResponse, Http404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import FormView, ListView, DetailView
+from django.views.generic import FormView, DetailView
 from django_filters.views import FilterView
 
 from favorites.models import Favorite
@@ -88,8 +88,7 @@ class ProductDetail(DetailView):
 
     # def get(self, request, *args, **kwargs):
     #     parse_products()
-    #     return super(ProductDetail, self).get(request=request, *args, **kwargs)
-
+    #     return super(ProductDetail, self).get(request=request, *args, **kwargs) # noqa
 
 
 class ExportCSVView(View):
@@ -116,7 +115,7 @@ class ExportCSVView(View):
                     'name': product.name,
                     'categories': categories,
                     'description': product.description,
-                    'image': product.image.name if product.image else 'no image',
+                    'image': product.image.name if product.image else 'no image', # noqa
                     'sku': product.sku,
                     'price': product.price,
                     'is_active': product.is_active

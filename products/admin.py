@@ -19,6 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = (render_image, 'name', 'price', 'is_active',
                     'categories_list')
     filter_horizontal = ('categories', 'products')
+
     def categories_list(self, obj):
         return ','.join(c.name for c in obj.categories.all())
 
@@ -26,5 +27,3 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (render_image, 'name',)
-
-

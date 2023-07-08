@@ -68,4 +68,3 @@ class FeedbackList(ListView):
     #        'max_retries': 3
     #    })
     #    return super().get(request, *args, **kwargs)
-

@@ -22,4 +22,4 @@ class Config(SingletonModel):
     contact_form_email = models.EmailField()
 
     def __str__(self):
-        return f"Config object"
+        return f"Config object: {self.contact_form_email}"
