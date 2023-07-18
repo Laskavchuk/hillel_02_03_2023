@@ -1,0 +1,13 @@
+.logo {
+    width: 35px;
+    height: 25px;
+}
+.product-img {
+    max-height: 250px;
+}
+.sub-product .product-img {
+    max-height: 200px;
+}
+.form-control-sm{
+        max-width: 200px;
+    }

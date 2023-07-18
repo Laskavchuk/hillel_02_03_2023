@@ -1,0 +1,129 @@
+{% load static %}
+{% load i18n %}
+<header>
+    <nav class="navbar navbar-expand-lg bg-secondary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'main' %}">
+                <img class="logo" src="{% static 'images/logo.png' %}"
+                     alt="logo">
+                {% if request.resolver_match.url_name == 'main' %}
+                    <strong>Gamex-shop</strong>
+                {% else %}
+                    Gamex-shop
+                {% endif %}
+            </a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'products' %}">
+                                {% if request.resolver_match.url_name == 'products' %}
+                                    <strong>{% translate 'Products' %}</strong>
+                                {% else %}
+                                    {% translate 'Products' %}
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'feedbacks' %}">
+                                {% if request.resolver_match.url_name == 'feedbacks' %}
+                                    <strong>{% translate 'Feedbacks' %}</strong>
+                                {% else %}
+                                    {% translate 'Feedbacks' %}
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% if request.user.is_authenticated %}
+                            {% if request.resolver_match.url_name == 'products' %}
+                            {% include 'parts/category_menu.html' %}
+                            <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href=# role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                CSV products
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'products_from_csv' %}">{% translate 'Import' %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'products_to_csv' %}">{% translate 'Download' %}</a></li>
+                              </ul>
+                            </li>
+                            {% endif %}
+                        {% include 'parts/profile.html' %}
+                    {% endif %}
+                        {% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'products_by_category' %}
+                            {% include 'parts/search.html' %}
+                        {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"
+                               href="{% url 'cart' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16" fill="currentColor"
+                                     class="bi bi-cart4" viewBox="0 0 16 16">
+                                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+                                </svg>
+                            </a>
+                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page"
+                           href="{% url 'favorites' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 class="ionicon" viewBox="0 0 512 512">
+                                <path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'set_language' %}"
+                              method="post" class="d-flex">
+                            {% csrf_token %}
+                            <input name="next" type="hidden"
+                                   value="{{ redirect_to }}">
+                            <select name="language" class="form-select">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                {% for language in languages %}
+                                    <option value="{{ language.code }}"
+                                            {% if language.code == LANGUAGE_CODE %}
+                                            selected{% endif %}>
+                                        {{ language.name_local }}
+                                        ({{ language.code }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="Go" class="btn btn-primary">
+                        </form>
+                    </li>
+                    {% else %}
+                        <li class="nav-item ms-auto">
+                            <a class="nav-link active" aria-current="page" href="{% url 'login' %}">
+                                {% if request.resolver_match.url_name == 'login' %}
+                                    <strong>{% translate 'Login' %}</strong>
+                                {% else %}
+                                    {% translate 'Login' %}
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'registration' %}">
+                                {% if request.resolver_match.url_name == 'registration' %}
+                                    <strong>{% translate 'Registration' %}</strong>
+                                {% else %}
+                                    {% translate 'Registration' %}
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

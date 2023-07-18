@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+    <div class="col-12 my-3 my-lg-5">
+        {% if order_items %}
+            <h2>{% translate 'Your cart' %}</h2>
+            <form method="post">
+                {% csrf_token %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in order_items %}
+                        <tr>
+                            <th scope="row"
+                                class="col-1">{{ forloop.counter }}</th>
+                            <td>
+                                {{ item.product.name }}
+                                <input type="hidden"
+                                       id="item_id_{{ forloop.counter }}"
+                                       name="item_{{ forloop.counter }}"
+                                       value="{{ item.id }}">
+                            </td>
+                            <td class="col-2">
+                                <input class="form-control" type="number"
+                                       id="quantity_id_{{ forloop.counter }}"
+                                       value="{{ item.quantity }}"
+                                       name="quantity_{{ forloop.counter }}"
+                                       min="1"
+                                >
+                            </td>
+                            <td class="col-2">
+                                {{ item.price }}
+                            </td>
+                            <td class="col-2">
+                                {{ item.sub_total }}
+                            </td>
+                            <td>
+                                <input type="submit" value="{% translate 'Remove' %}"
+                                       formaction="{% url 'cart_action' 'remove' %}?order_item_id={{ item.id }}"
+                                       class="btn btn-danger w-100">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="{% translate 'Clear cart' %}"
+                                       formaction="{% url 'cart_action' 'clear' %}"
+                                       class="btn btn-danger w-100">
+                        </td>
+                        <td>{% translate 'Total:' %} <span
+                                class="small">({% translate 'including discount' %})</span></td>
+                        <td>{{ order.total_amount }}</td>
+                    </tr>
+                    </tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        {% if not order.discount %}
+                            <td><label for="id_discount">{% translate 'Have a discount code?' %}
+                                {% translate 'Please enter here.' %}
+                                </label></td>
+                            <td><input class="form-control" id="id_discount"
+                                       type="text"
+                                       name="discount"></td>
+                        {% else %}
+                            <td colspan="2">{% translate 'You already applied discount.' %}</td>
+                        {% endif %}
+                        <td><input type="submit" class="btn btn-primary"
+                                   value="{% translate 'Recalculate' %}"></td>
+                    </tr>
+                </table>
+            </form>
+            <form method="post" action="{% url 'cart_action' 'pay' %}">
+                {% csrf_token %}
+                <input type="submit" value="{% translate 'Pay order' %}"
+                       class="btn btn-secondary w-100">
+            </form>
+            {% if form.errors %}
+                <div class="mb-2">
+                    <ul>
+                        {% for error in form.errors %}
+                            <li class="text-danger small">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if form.non_field_errors %}
+                <div class="mb-2">
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li class="text-danger small">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% else %}
+            <h2>{% translate 'Your cart is empty.' %}</h2>
+            <p><a href="{% url 'products' %}">{% translate 'Add to cart.' %}</a></p>
+        {% endif %}
+    </div>
+{% endblock content %}

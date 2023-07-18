@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <h2>{% translate 'Login' %}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% include 'parts/form.html' with form=form %}
+            <input type="submit" class="btn btn-primary" value="{% translate 'Submit' %}" >
+        </form>
+    </div>
+    <div class="mt-3 text-center">
+        {% translate "Don't have an account yet?" %}
+            <a href="{% url 'registration' %}"> {% translate 'Signup' %} </a>
+    </div>
+    <div class="mt-3 text-center">
+        {% translate "Forget password?" %}
+            <a href="{% url 'password_reset' %}"> {% translate 'Password reset' %} </a>
+    </div>
+{% endblock content %}

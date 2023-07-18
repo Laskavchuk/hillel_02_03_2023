@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3 my-3 my-lg-5">
+        <h2>{% translate 'Feedbacks' %}</h2>
+        <ul class="list-group py-3">
+            {% for feedback in object_list %}
+                <li class="list-group-item">
+                    <a class="d-flex justify-content-between link-dark link-underline link-underline-opacity-0"
+                       data-bs-toggle="collapse"
+                       href="#collapse{{ feedback.id }}">
+                        <span>{{ feedback.user.first_name }} {% include 'parts/stars.html' with count=feedback.rating %}</span>
+                        <span>{{ feedback.created_at|date:"d M Y" }}</span>
+                    </a>
+                    <div class="collapse pt-3" id="collapse{{ feedback.id }}">
+                        {{ feedback.text }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="my-3 text-center">
+            <a href="{% url 'feedback_create' %}">{% translate 'Leave your feedback' %}</a>
+        </div>
+    </div>
+{% endblock content %}
+

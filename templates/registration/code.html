@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <h2>{% translate 'Phone validation' %}</h2>
+        <form method="post" id="form-code">
+            {% csrf_token %}
+            {% include 'parts/form.html' with form=form %}
+            <p>
+                <span
+                    class="small">({% translate 'code will be valid for 1 minute' %})
+                </span>
+            </p>
+            <button type="submit" class="btn btn-warning" form="form-code">{% translate 'Confirm' %}</button>
+            <a href="{% url 'main' %}" class="btn btn-warning">{% translate 'Later' %}</a>
+        </form>
+    </div>
+{% endblock content %}

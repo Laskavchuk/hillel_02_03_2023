@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <h2>{% translate 'New feedbacks' %}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% include 'parts/form.html' with form=form %}
+            <input type="submit" class="btn btn-primary" value="{% translate 'Submit' %}">
+        </form>
+    </div>
+{% endblock content %}

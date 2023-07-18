@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+{% load i18n %}
+<form method="get">
+    <div class="container">
+<!--            <h1>-->
+<!--                {% translate 'Filtering:' %}-->
+<!--            </h1>-->
+        <div class="d-flex flex-column mt-2">
+            <label for="{{ filter.form.price.id_for_label }}" class="form-label">{% translate 'Price min-max:' %}</label>
+            {{ filter.form.price|attr:"class:form-control-sm"}}
+        </div>
+        <div class="d-flex justify-content-between">
+            <input class="btn btn-primary pe-auto mt-2" type="submit" value="{% translate 'Filter' %}" />
+            <a class="btn btn-primary pe-auto mt-2" href="?">{% translate 'Reset filters' %}</a>
+        </div>
+    </div>
+</form>
